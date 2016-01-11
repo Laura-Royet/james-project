@@ -29,7 +29,7 @@ public class TimeConverterTest {
         //Given
         long expected = 2;
         //When
-        long actual = TimeConverter.getMilliSeconds(2,"msec");
+        long actual = TimeConverter.getMilliSeconds(2, "msec");
         //Then
         assertThat(actual).isEqualTo(expected);
     }
@@ -49,7 +49,7 @@ public class TimeConverterTest {
         //Given
         long expected = 2;
         //When
-        long actual = TimeConverter.getMilliSeconds(2,"msecs");
+        long actual = TimeConverter.getMilliSeconds(2, "msecs");
         //Then
         assertThat(actual).isEqualTo(expected);
     }
@@ -69,7 +69,7 @@ public class TimeConverterTest {
         //Given
         long expected = 2000;
         //When
-        long actual = TimeConverter.getMilliSeconds(2,"sec");
+        long actual = TimeConverter.getMilliSeconds(2, "sec");
         //Then
         assertThat(actual).isEqualTo(expected);
     }
@@ -88,7 +88,7 @@ public class TimeConverterTest {
     public void getMilliSecondsShouldConvertValueWhenSecsUnit() {
         long expected = 2000;
         //When
-        long actual = TimeConverter.getMilliSeconds(2,"secs");
+        long actual = TimeConverter.getMilliSeconds(2, "secs");
         //Then
         assertThat(actual).isEqualTo(expected);
     }
@@ -108,7 +108,7 @@ public class TimeConverterTest {
         //Given
         long expected = 120000;
         //When
-        long actual = TimeConverter.getMilliSeconds(2,"minute");
+        long actual = TimeConverter.getMilliSeconds(2, "minute");
         //Then
         assertThat(actual).isEqualTo(expected);
     }
@@ -128,7 +128,7 @@ public class TimeConverterTest {
         //Given
         long expected = 120000;
         //When
-        long actual = TimeConverter.getMilliSeconds(2,"minutes");
+        long actual = TimeConverter.getMilliSeconds(2, "minutes");
         //Then
         assertThat(actual).isEqualTo(expected);
     }
@@ -168,7 +168,7 @@ public class TimeConverterTest {
         //Given
         long expected = 7200000;
         //When
-        long actual = TimeConverter.getMilliSeconds(2,"hours");
+        long actual = TimeConverter.getMilliSeconds(2, "hours");
         //Then
         assertThat(actual).isEqualTo(expected);
     }
@@ -230,7 +230,7 @@ public class TimeConverterTest {
     
     @Test(expected = NumberFormatException.class) 
     public void getMilliSecondsShouldThrowWhenIllegalUnitInRawString() { 
-        TimeConverter.getMilliSeconds(2 + " week");
+        TimeConverter.getMilliSeconds("2 week");
     } 
 
     @Test (expected = NumberFormatException.class)
