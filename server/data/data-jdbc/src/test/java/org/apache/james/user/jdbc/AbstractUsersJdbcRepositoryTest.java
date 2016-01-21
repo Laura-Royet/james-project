@@ -18,53 +18,21 @@
  ****************************************************************/
 package org.apache.james.user.jdbc;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.apache.james.user.api.UsersRepositoryException;
 import org.apache.james.user.lib.AbstractUsersRepositoryTest;
+import org.junit.Ignore;
+import org.junit.Test;
 
 public abstract class AbstractUsersJdbcRepositoryTest extends AbstractUsersRepositoryTest {
     
-    /* Deactivate this test for the Jdbc implementation
-     * Should be disable via @Ignore with JUnit4
-     * 
-     * @see org.apache.james.user.lib.AbstractUsersRepositoryTest#testUsersRepositoryEmpty()
-     */
     @Override
-    public void testUserListing() {
+    @Ignore
+    @Test(expected = UsersRepositoryException.class)
+    public void addUserShouldThrowWhenSameUsernameWithDiferentCase() throws UsersRepositoryException {
     }
-
-    /* Deactivate this test for the Jdbc implementation
-     * Should be disable via @Ignore with JUnit4
-     * 
-     * @see org.apache.james.user.lib.AbstractUsersRepositoryTest#testUsersRepositoryEmpty()
-     */
-    @Override
-    public void testUpperCaseSameUser() {
-    }
-
-    /* Deactivate this test for the Jdbc implementation
-     * Should be disable via @Ignore with JUnit4
-     * 
-     * @see org.apache.james.user.lib.AbstractUsersRepositoryTest#testUsersRepositoryEmpty()
-     */
-    @Override
-    public void testUserAddedIsFound() {
-    }
-
-    /* Deactivate this test for the Jdbc implementation
-     * Should be disable via @Ignore with JUnit4
-     * 
-     * @see org.apache.james.user.lib.AbstractUsersRepositoryTest#testUsersRepositoryEmpty()
-     */
-    @Override
-    public void testUserPassword() {
-    }
-
-    /* Deactivate this test for the Jdbc implementation
-     * Should be disable via @Ignore with JUnit4
-     * 
-     * @see org.apache.james.user.lib.AbstractUsersRepositoryTest#testUsersRepositoryEmpty()
-     */
-    @Override
-    public void testUserAddRemoveCycle() {
-    }
-
 }

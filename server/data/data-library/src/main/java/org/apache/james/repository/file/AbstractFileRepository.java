@@ -41,6 +41,7 @@ import org.apache.james.filesystem.api.FileSystem;
 import org.apache.james.lifecycle.api.Configurable;
 import org.apache.james.lifecycle.api.LogEnabled;
 import org.apache.james.repository.api.Repository;
+import org.apache.james.user.api.UsersRepositoryException;
 import org.slf4j.Logger;
 
 /**
@@ -261,8 +262,12 @@ public abstract class AbstractFileRepository implements Repository, Configurable
      * 
      * @param key
      *            the key to remove
+     * @throws IOException 
      */
-    public synchronized void remove(final String key) {
+    //AVANT
+ // A QUOI SERT le DEUXIÈME TYPE EXCEPTION ?
+    //=> on ne rentrera jamais dans le if donc a été retiré
+    /*public synchronized void remove(final String key) {
         try {
             FileUtils.forceDelete(getFile(key));
             if (DEBUG)
@@ -272,8 +277,23 @@ public abstract class AbstractFileRepository implements Repository, Configurable
         } catch (Exception e) {
             throw new RuntimeException("Exception caught while removing" + " an object: " + e);
         }
+    }*/
+    //APRÈS
+    public synchronized void remove(final String key) throws UsersRepositoryException {//rajout de l'exception UsersRepositoryException dans signature
+        try {
+            FileUtils.forceDelete(getFile(key));
+            //il faudrait quelque chose ici pour atteindre l'exception du catch
+            //sinon, on laisse le type d'exception précédent et on lance l'exception UsersRepositoryException dans le catch 
+        } catch (FileNotFoundException e) { 
+            throw new UsersRepositoryException("File for " + key + " not found: wasn't able to remove", e) ;
+        } catch (Exception e) {
+            throw new RuntimeException("Exception caught while removing" + " an object: " + e);
+        }//ctrl i pour faire bonne indentation
+        //message doit expliquer exception
+        //le dernier catch permet de se débarraser de "throws IOException" dans signature
+        //on veut lancer une exception "UsersRepositoryException" 
     }
-
+//?INDENTATION OK DANS BLOCK CATCH ?
     /**
      * 
      * Indicates if the given key is associated to a contained object

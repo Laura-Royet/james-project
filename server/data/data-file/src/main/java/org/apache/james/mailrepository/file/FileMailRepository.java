@@ -27,6 +27,7 @@ import org.apache.james.filesystem.api.FileSystem;
 import org.apache.james.mailrepository.lib.AbstractMailRepository;
 import org.apache.james.repository.file.FilePersistentObjectRepository;
 import org.apache.james.repository.file.FilePersistentStreamRepository;
+import org.apache.james.user.api.UsersRepositoryException;
 import org.apache.mailet.Mail;
 
 import javax.annotation.PostConstruct;
@@ -252,8 +253,12 @@ public class FileMailRepository extends AbstractMailRepository {
     protected void internalRemove(String key) throws MessagingException {
         if (keys != null)
             keys.remove(key);
-        streamRepository.remove(key);
-        objectRepository.remove(key);
+        try {
+            streamRepository.remove(key);
+            objectRepository.remove(key);
+        } catch (UsersRepositoryException e) {
+            throw new MessagingException("Error occured while removing an element", e);
+        }
     }
 
     @Override

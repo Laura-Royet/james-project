@@ -35,6 +35,7 @@ import org.apache.james.user.lib.AbstractUsersRepository;
 import org.apache.james.user.lib.AbstractUsersRepositoryTest;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -103,14 +104,14 @@ public class UsersFileRepositoryTest extends AbstractUsersRepositoryTest {
         return res;
     }
     
-    /* Disable testUpperCaseSameUser test.
+    /* Disable addUserShouldThrowWhenSameUsernameWithDiferentCase test.
      *
-     * @see org.apache.james.user.lib.AbstractUsersRepositoryTest#testUpperCaseSameUser()
+     * @see org.apache.james.user.lib.AbstractUsersRepositoryTest#addUserShouldThrowWhenSameUsernameWithDiferentCase()
      */
+    @Test
     @Override
-    public void testUpperCaseSameUser() throws UsersRepositoryException {
+    public void addUserShouldThrowWhenSameUsernameWithDiferentCase() throws UsersRepositoryException {
     }
-
 
     protected void disposeUsersRepository() throws UsersRepositoryException {
         if (this.usersRepository != null) {

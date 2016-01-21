@@ -24,6 +24,7 @@ import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.james.lifecycle.api.Configurable;
 import org.apache.james.lifecycle.api.LogEnabled;
 import org.apache.james.mailrepository.api.MailRepository;
+import org.apache.james.user.api.UsersRepositoryException;
 import org.apache.mailet.Mail;
 import org.slf4j.Logger;
 
@@ -135,6 +136,7 @@ public abstract class AbstractMailRepository implements MailRepository, LogEnabl
     }
 
     /**
+     * @throws MessagingException 
      * @see org.apache.james.mailrepository.api.MailRepository#remove(String)
      */
     public void remove(String key) throws MessagingException {
@@ -153,6 +155,6 @@ public abstract class AbstractMailRepository implements MailRepository, LogEnabl
     /**
      * @see #remove(String)
      */
-    protected abstract void internalRemove(String key) throws MessagingException;
+    protected abstract void internalRemove(String key) throws MessagingException ;
 
 }

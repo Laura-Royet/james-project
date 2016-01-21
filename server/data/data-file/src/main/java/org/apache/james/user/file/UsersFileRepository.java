@@ -147,7 +147,7 @@ public class UsersFileRepository extends AbstractJamesUsersRepository {
         }
         if (contains(name)) {
             try {
-                return (User) objectRepository.get(name);
+                return (User) objectRepository.get(name); 
             } catch (Exception e) {
                 throw new UsersRepositoryException("Exception while retrieving user: " + e.getMessage());
             }
