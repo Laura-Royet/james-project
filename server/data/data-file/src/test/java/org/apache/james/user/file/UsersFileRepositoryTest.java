@@ -110,7 +110,7 @@ public class UsersFileRepositoryTest extends AbstractUsersRepositoryTest {
      */
     @Test
     @Override
-    public void addUserShouldThrowWhenSameUsernameWithDiferentCase() throws UsersRepositoryException {
+    public void addUserShouldThrowWhenSameUsernameWithDifferentCase() throws UsersRepositoryException {
     }
 
     protected void disposeUsersRepository() throws UsersRepositoryException {

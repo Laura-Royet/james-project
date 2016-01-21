@@ -143,7 +143,7 @@ public abstract class AbstractUsersRepositoryTest {
     }
     
     @Test(expected = UsersRepositoryException.class)
-    public void addUserShouldThrowWhenSameUsernameWithDiferentCase() throws UsersRepositoryException {
+    public void addUserShouldThrowWhenSameUsernameWithDifferentCase() throws UsersRepositoryException {
         //Given
         usersRepository.addUser(login("myUsername"), "password");
         //When

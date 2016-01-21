@@ -84,7 +84,7 @@ public class HBaseUsersRepositoryTest extends AbstractUsersRepositoryTest {
     
     @Override
     @Ignore
-    @Test(expected = UsersRepositoryException.class)//
+    @Test(expected = UsersRepositoryException.class)
     public void removeUserShouldThrowWhenUserNotInRepository() throws UsersRepositoryException {
     }
 }
