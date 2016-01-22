@@ -35,6 +35,7 @@ import org.apache.james.user.lib.AbstractUsersRepository;
 import org.apache.james.user.lib.AbstractUsersRepositoryTest;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
@@ -121,6 +122,12 @@ public class UsersFileRepositoryTest extends AbstractUsersRepositoryTest {
             }
             LifecycleUtil.dispose(this.usersRepository);
         }
+    }
+    
+    @Override
+    @Ignore
+    @Test(expected = UsersRepositoryException.class)
+    public void removeUserShouldThrowWhenUserNotInRepository() {
     }
 
 }
