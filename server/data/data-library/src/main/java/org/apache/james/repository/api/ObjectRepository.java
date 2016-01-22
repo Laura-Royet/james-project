@@ -21,8 +21,6 @@ package org.apache.james.repository.api;
 
 import java.util.Iterator;
 
-import org.apache.james.user.api.UsersRepositoryException;
-
 public interface ObjectRepository extends Repository {
 
     boolean containsKey(String key);
@@ -35,5 +33,5 @@ public interface ObjectRepository extends Repository {
 
     void put(String key, Object value);
 
-    void remove(String key) throws UsersRepositoryException;
+    boolean remove(String key);
 }

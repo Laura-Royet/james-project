@@ -41,7 +41,6 @@ import org.apache.james.filesystem.api.FileSystem;
 import org.apache.james.lifecycle.api.Configurable;
 import org.apache.james.lifecycle.api.LogEnabled;
 import org.apache.james.repository.api.Repository;
-import org.apache.james.user.api.UsersRepositoryException;
 import org.slf4j.Logger;
 
 /**
@@ -265,11 +264,12 @@ public abstract class AbstractFileRepository implements Repository, Configurable
      * @throws IOException 
      */
     
-    public synchronized void remove(final String key) throws UsersRepositoryException {
+    public synchronized boolean remove(final String key) {
         try {
             FileUtils.forceDelete(getFile(key));
+            return true;
         } catch (FileNotFoundException e) { 
-            throw new UsersRepositoryException("File for " + key + " not found: wasn't able to remove", e) ;
+            return false;
         } catch (Exception e) {
             throw new RuntimeException("Exception caught while removing" + " an object: " + e);
         }

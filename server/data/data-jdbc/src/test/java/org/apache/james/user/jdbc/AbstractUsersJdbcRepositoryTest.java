@@ -18,11 +18,6 @@
  ****************************************************************/
 package org.apache.james.user.jdbc;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import org.apache.james.user.api.UsersRepositoryException;
 import org.apache.james.user.lib.AbstractUsersRepositoryTest;
 import org.junit.Ignore;
@@ -33,6 +28,6 @@ public abstract class AbstractUsersJdbcRepositoryTest extends AbstractUsersRepos
     @Override
     @Ignore
     @Test(expected = UsersRepositoryException.class)
-    public void addUserShouldThrowWhenSameUsernameWithDiferentCase() throws UsersRepositoryException {
+    public void addUserShouldThrowWhenSameUsernameWithDifferentCase() throws UsersRepositoryException {
     }
 }

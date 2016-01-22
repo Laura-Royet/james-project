@@ -141,7 +141,6 @@ public abstract class AbstractMailRepository implements MailRepository, LogEnabl
         if (lock(key)) {
             try {
                 internalRemove(key);
-            } catch (MessagingException e) {
             } finally {
                 unlock(key);
             }

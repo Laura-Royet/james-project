@@ -121,7 +121,7 @@ public abstract class AbstractUsersRepositoryTest {
         //When
         Iterator<String> actual = usersRepository.list();
         //Then
-        assertThat(actual).containsOnly(user1,user2,user3);
+        assertThat(actual).containsOnly(user1, user2, user3);
     }
     
     @Test
@@ -170,7 +170,7 @@ public abstract class AbstractUsersRepositoryTest {
     }
 
     @Test
-    public void getUserByNameShouldReturnNullWhenDiferentCase() throws UsersRepositoryException {
+    public void getUserByNameShouldReturnNullWhenDifferentCase() throws UsersRepositoryException {
         //Given
         usersRepository.addUser(login("username"), "password");
         //When
@@ -218,17 +218,17 @@ public abstract class AbstractUsersRepositoryTest {
         //Then
         assertThat(actual).isFalse();
     }
-    
+
     @Test
     public void testShouldReturnFalseWhenAUserHasAnIncorrectCaseName() throws UsersRepositoryException {
         //Given
         usersRepository.addUser(login("username"), "password");
         //When
-         boolean actual= usersRepository.test(login("userName"), "password");
+        boolean actual= usersRepository.test(login("userName"), "password");
         //Then
         assertThat(actual).isFalse();
     }
-    
+
     @Test
     public void testShouldReturnFalseWhenEmptyRepository() throws UsersRepositoryException {
         //When
@@ -236,14 +236,14 @@ public abstract class AbstractUsersRepositoryTest {
         //Then
         assertThat(actual).isFalse();
     }
-    
+
     @Test
     public void testShouldReturnFalseWhenAUserIsRemovedFromRepository() throws UsersRepositoryException {
         //Given
         usersRepository.addUser(user1, "password");
         usersRepository.removeUser(user1);
         //When
-        boolean actual = usersRepository.test(user1,"password");
+        boolean actual = usersRepository.test(user1, "password");
         //Then
         assertThat(actual).isFalse();
     }

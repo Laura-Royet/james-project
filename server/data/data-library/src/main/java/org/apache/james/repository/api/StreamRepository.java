@@ -23,8 +23,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 
-import org.apache.james.user.api.UsersRepositoryException;
-
 public interface StreamRepository extends Repository {
 
     InputStream get(String key);
@@ -33,5 +31,5 @@ public interface StreamRepository extends Repository {
 
     OutputStream put(String key);
 
-    void remove(String key) throws UsersRepositoryException;
+    boolean remove(String key);
 }
