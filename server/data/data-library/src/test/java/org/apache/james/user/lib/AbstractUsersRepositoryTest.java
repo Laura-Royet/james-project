@@ -298,12 +298,7 @@ public abstract class AbstractUsersRepositoryTest {
         usersRepository.updateUser(user);
     }
 
-    /**
-     * Dispose the repository
-     *
-     * @throws UsersRepositoryException
-     */
-   
+
     protected void disposeUsersRepository() throws UsersRepositoryException {
         LifecycleUtil.dispose(this.usersRepository);
     }
