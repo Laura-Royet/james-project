@@ -44,7 +44,12 @@ public class JwtTokenVerifierTest {
             "U1LZUUbJW9/CH45YXz82CYqkrfbnQxqRb2iVbVjs/sHopHd1NTiCfUtwvcYJiBVj\n" +
             "kwIDAQAB\n" +
             "-----END PUBLIC KEY-----";
-    private static final String VALID_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIn0.T04BTkLXkJj24coSZkK13RfG25lpvmSl2MJ7N10KpBk9_-95EGYZdog-BDAn3PJzqVw52z-Bwjh4VOj1-j7cURu0cT4jXehhUrlCxS4n7QHZDN_bsEYGu7KzjWTpTsUiHe-rN7izXVFxDGG1TGwlmBCBnPW-EFCf9ylUsJi0r2BKNdaaPRfMIrHptH1zJBkkUziWpBN1RNLjmvlAUf49t1Tbv21ZqYM5Ht2vrhJWczFbuC-TD-8zJkXhjTmA1GVgomIX5dx1cH-dZX1wANNmshUJGHgepWlPU-5VIYxPEhb219RMLJIELMY2qNOR8Q31ydinyqzXvCSzVJOf6T60-w";
+    
+    private static final String VALID_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIn0.T04BTk" +
+                "LXkJj24coSZkK13RfG25lpvmSl2MJ7N10KpBk9_-95EGYZdog-BDAn3PJzqVw52z-Bwjh4VOj1-j7cURu0cT4jXehhUrlCxS4n7QHZD" +
+                "N_bsEYGu7KzjWTpTsUiHe-rN7izXVFxDGG1TGwlmBCBnPW-EFCf9ylUsJi0r2BKNdaaPRfMIrHptH1zJBkkUziWpBN1RNLjmvlAUf49" +
+                "t1Tbv21ZqYM5Ht2vrhJWczFbuC-TD-8zJkXhjTmA1GVgomIX5dx1cH-dZX1wANNmshUJGHgepWlPU-5VIYxPEhb219RMLJIELMY2qN" +
+                "OR8Q31ydinyqzXvCSzVJOf6T60-w";
 
     private JwtTokenVerifier sut;
 
@@ -76,11 +81,11 @@ public class JwtTokenVerifierTest {
 
     @Test
     public void shouldThrowOnMismatchingSigningKey() {
-        String token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIn0.Pd6t82" +
+        String invalidToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIn0.Pd6t82" +
                 "tPL3EZdkeYxw_DV2KimE1U2FvuLHmfR_mimJ5US3JFU4J2Gd94O7rwpSTGN1B9h-_lsTebo4ua4xHsTtmczZ9xa8a_kWKaSkqFjNFa" +
                 "Fp6zcoD6ivCu03SlRqsQzSRHXo6TKbnqOt9D6Y2rNa3C4igSwoS0jUE4BgpXbc0";
 
-        assertThatThrownBy(() -> sut.verify(token))
+        assertThatThrownBy(() -> sut.verify(invalidToken))
             .isInstanceOf(SignatureException.class);
     }
 
@@ -94,7 +99,7 @@ public class JwtTokenVerifierTest {
 
         assertThatThrownBy(() -> sut.verify(tokenWithNullSubject))
             .isInstanceOf(MalformedJwtException.class)
-            .hasMessage("Subject of token is mandatory!");
+            .hasMessage("'subject' field in token is mandatory");
     }
     
     @Test
@@ -107,7 +112,7 @@ public class JwtTokenVerifierTest {
 
         assertThatThrownBy(() -> sut.verify(tokenWithEmptySubject))
             .isInstanceOf(MalformedJwtException.class)
-            .hasMessage("Subject of token is mandatory!");
+            .hasMessage("'subject' field in token is mandatory");
     }
 
     @Test

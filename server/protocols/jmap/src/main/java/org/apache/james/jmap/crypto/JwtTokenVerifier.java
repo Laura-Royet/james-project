@@ -42,7 +42,7 @@ public class JwtTokenVerifier {
     public boolean verify(String token) throws JwtException {
         String subject = extractLogin(token);
         if (Strings.isNullOrEmpty(subject)) {
-            throw new MalformedJwtException("Subject of token is mandatory!");
+            throw new MalformedJwtException("'subject' field in token is mandatory");
         }
         return true;
     }
