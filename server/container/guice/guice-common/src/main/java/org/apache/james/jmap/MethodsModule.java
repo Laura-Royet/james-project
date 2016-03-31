@@ -31,6 +31,7 @@ import org.apache.james.jmap.methods.Method;
 import org.apache.james.jmap.methods.SetMailboxesCreationProcessor;
 import org.apache.james.jmap.methods.SetMailboxesMethod;
 import org.apache.james.jmap.methods.SetMailboxesProcessor;
+import org.apache.james.jmap.methods.SetMailboxesUpdateProcessor;
 import org.apache.james.jmap.methods.SetMessagesCreationProcessor;
 import org.apache.james.jmap.methods.SetMessagesDestructionProcessor;
 import org.apache.james.jmap.methods.SetMessagesMethod;
@@ -70,7 +71,8 @@ public class MethodsModule<Id extends MailboxId> extends AbstractModule {
 
         Multibinder<SetMailboxesProcessor<Id>> setMailboxesProcessor =
             Multibinder.newSetBinder(binder(), guiceGenericType.newGenericType(SetMailboxesProcessor.class));
-        setMailboxesProcessor.addBinding().to(guiceGenericType.newGenericType(SetMailboxesCreationProcessor.class));
+//        setMailboxesProcessor.addBinding().to(guiceGenericType.newGenericType(SetMailboxesCreationProcessor.class));
+        setMailboxesProcessor.addBinding().to(guiceGenericType.newGenericType(SetMailboxesUpdateProcessor.class));
 
         Multibinder<SetMessagesProcessor<Id>> setMessagesProcessors =
                 Multibinder.newSetBinder(binder(), guiceGenericType.newGenericType(SetMessagesProcessor.class));

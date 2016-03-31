@@ -424,4 +424,34 @@ public abstract class SetMailboxesMethodTest {
                     hasEntry(equalTo("parentId"), not(isEmptyOrNullString())),
                     hasEntry(equalTo("name"), equalTo("child")))));
     }
+
+    @Test
+    public void setMailboxesShouldReturnUpdatedMailbox() throws Exception {
+        String requestBody =
+                "[" +
+                    "  [ \"setMailboxes\"," +
+                    "    {" +
+                    "      \"update\": {" +
+                    "        \"update-id01\" : {" +
+                    "          \"name\" : \"yolo\"" +
+                    "        }" +
+                    "      }" +
+                    "    }," +
+                    "    \"#0\"" +
+                    "  ]" +
+                    "]";
+
+            given()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .header("Authorization", this.accessToken.serialize())
+                .body(requestBody)
+            .when()
+                .post("/jmap")
+            .then()
+                .log().ifValidationFails()
+                .statusCode(200)
+                .body(NAME, equalTo("mailboxesSet"))
+                .body(ARGUMENTS + ".updated", hasItems("update-id01"));
+    }
 }

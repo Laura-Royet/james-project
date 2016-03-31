@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.james.jmap.model.mailbox.MailboxRequest;
+import org.apache.james.jmap.model.mailbox.MailboxUpdateRequest;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
@@ -40,27 +41,30 @@ public class SetMailboxesRequestTest {
     }
 
     @Test(expected=NotImplementedException.class)
-    public void builderShouldThrowWhenUpdate() {
-        SetMailboxesRequest.builder().update(ImmutableMap.of());
-    }
-    
-    @Test(expected=NotImplementedException.class)
     public void builderShouldThrowWhenDestroy() {
         SetMailboxesRequest.builder().destroy(ImmutableList.of());
     }
-    
+
     @Test
     public void builderShouldWork() {
+        //Given
         MailboxCreationId creationId = MailboxCreationId.of("creationId");
+        String mailboxId = "mailboxId";
         MailboxRequest mailboxRequest = MailboxRequest.builder()
             .name("mailboxRequest")
             .build();
-        SetMailboxesRequest expected = new SetMailboxesRequest(ImmutableMap.of(creationId, mailboxRequest));
-        
+        MailboxUpdateRequest mailboxUpdateRequest = MailboxUpdateRequest.builder()
+            .name("mailboxUpdateRequest")
+            .build();
+        SetMailboxesRequest expected = new SetMailboxesRequest(ImmutableMap.of(creationId, mailboxRequest), ImmutableMap.of(mailboxId, mailboxUpdateRequest));
+
+        //When
         SetMailboxesRequest actual = SetMailboxesRequest.builder()
             .create(creationId, mailboxRequest)
+            .update(mailboxId, mailboxUpdateRequest)
             .build();
-        
+
+        //Then
         assertThat(actual).isEqualToComparingFieldByField(expected);
     }
 }

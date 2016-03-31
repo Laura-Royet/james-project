@@ -23,6 +23,7 @@ import java.util.Map;
 import org.apache.james.jmap.methods.Method;
 import org.apache.james.jmap.model.mailbox.Mailbox;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 public class SetMailboxesResponse implements Method.Response {
@@ -34,15 +35,24 @@ public class SetMailboxesResponse implements Method.Response {
     public static class Builder {
 
         private final ImmutableMap.Builder<MailboxCreationId, Mailbox> created;
+        private final ImmutableList.Builder<String> updated;
         private final ImmutableMap.Builder<MailboxCreationId, SetError> notCreated;
+        private final ImmutableMap.Builder<String, SetError> notUpdated;
 
         private Builder() {
             created = ImmutableMap.builder();
+            updated = ImmutableList.builder();
             notCreated = ImmutableMap.builder();
+            notUpdated = ImmutableMap.builder();
         }
 
         public Builder creation(MailboxCreationId creationId, Mailbox mailbox) {
             created.put(creationId, mailbox);
+            return this;
+        }
+
+        public Builder updated(String mailboxId) {
+            updated.add(mailboxId);
             return this;
         }
 
@@ -56,25 +66,45 @@ public class SetMailboxesResponse implements Method.Response {
             return this;
         }
 
+        public Builder notUpdated(String mailboxId, SetError setError) {
+            notUpdated.put(mailboxId, setError);
+            return this;
+        }
+
         public SetMailboxesResponse build() {
-            return new SetMailboxesResponse(created.build(), notCreated.build());
+            return new SetMailboxesResponse(created.build(), updated.build(), notCreated.build(), notUpdated.build());
         }
 
     }
 
     private final ImmutableMap<MailboxCreationId, Mailbox> created;
+    private final ImmutableList<String> updated;
     private final ImmutableMap<MailboxCreationId, SetError> notCreated;
+    private final ImmutableMap<String, SetError> notUpdated;
 
-    private SetMailboxesResponse(ImmutableMap<MailboxCreationId, Mailbox> created, ImmutableMap<MailboxCreationId, SetError> notCreated) {
+    private SetMailboxesResponse(ImmutableMap<MailboxCreationId, Mailbox> created,
+            ImmutableList<String> updated,
+            ImmutableMap<MailboxCreationId, SetError> notCreated,
+            ImmutableMap<String, SetError> notUpdated) {
         this.created = created;
+        this.updated = updated;
         this.notCreated = notCreated;
+        this.notUpdated = notUpdated;
     }
 
     public ImmutableMap<MailboxCreationId, Mailbox> getCreated() {
         return created;
     }
 
+    public ImmutableList<String> getUpdated() {
+        return updated;
+    }
+
     public Map<MailboxCreationId, SetError> getNotCreated() {
         return notCreated;
+    }
+
+    public ImmutableMap<String, SetError> getNotUpdated() {
+        return notUpdated;
     }
 }
