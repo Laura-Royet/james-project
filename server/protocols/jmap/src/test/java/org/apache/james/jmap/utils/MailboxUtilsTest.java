@@ -184,6 +184,25 @@ public class MailboxUtilsTest {
     }
 
     @Test
+    public void mailboxPathFromMailboxIdShouldReturnPresentWhenExists() throws Exception {
+        MailboxPath mailboxPath = new MailboxPath("#private", user, "myBox");
+        mailboxManager.createMailbox(mailboxPath, mailboxSession);
+        InMemoryId mailboxId = mailboxMapperFactory.getMailboxMapper(mailboxSession)
+                .findMailboxByPath(mailboxPath)
+                .getMailboxId();
+
+        Optional<MailboxPath> actual = sut.mailboxPathFromMailboxId(mailboxId.serialize(), mailboxSession);
+        assertThat(actual).isPresent();
+        assertThat(actual.get()).isEqualTo(mailboxPath);
+    }
+
+    @Test
+    public void mailboxPathFromMailboxIdShouldReturnAbsentWhenDoesntExist() throws Exception {
+        Optional<MailboxPath> mailboxPath = sut.mailboxPathFromMailboxId("123", mailboxSession);
+        assertThat(mailboxPath).isEmpty();
+    }
+
+    @Test
     public void getMailboxPathShouldReturnThePathWhenRootMailbox() throws Exception {
         MailboxPath expected = new MailboxPath("#private", user, "myBox");
         mailboxManager.createMailbox(expected, mailboxSession);

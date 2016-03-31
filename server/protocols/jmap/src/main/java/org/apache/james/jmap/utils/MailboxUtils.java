@@ -148,4 +148,9 @@ public class MailboxUtils<Id extends MailboxId> {
                     mailboxMapperFactory.getMailboxMapper(mailboxSession).hasChildren(mailbox, mailboxSession.getPathDelimiter())))
                 .orElse(false);
     }
+    
+    public Optional<MailboxPath> mailboxPathFromMailboxId(String mailboxId, MailboxSession mailboxSession) {
+        return mailboxFromMailboxId(mailboxId, mailboxSession)
+                .map(mailbox -> getMailboxPath(mailbox, mailboxSession));
+    }
 }
