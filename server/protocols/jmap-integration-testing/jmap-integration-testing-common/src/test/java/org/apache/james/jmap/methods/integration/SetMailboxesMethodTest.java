@@ -86,7 +86,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldErrorNotSupportedWhenRoleGiven() throws Exception {
+    public void setMailboxesShouldErrorNotSupportedWhenRoleGiven() {
         String requestBody =
             "[" +
                 "  [ \"setMailboxes\"," +
@@ -116,7 +116,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldErrorNotSupportedWhenSortOrderGiven() throws Exception {
+    public void setMailboxesShouldErrorNotSupportedWhenSortOrderGiven() {
         String requestBody =
             "[" +
                 "  [ \"setMailboxes\"," +
@@ -146,7 +146,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnCreatedMailbox() throws Exception {
+    public void setMailboxesShouldReturnCreatedMailbox() {
         String requestBody =
             "[" +
                 "  [ \"setMailboxes\"," +
@@ -175,7 +175,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldCreateMailbox() throws Exception {
+    public void setMailboxesShouldCreateMailbox() {
         String requestBody =
             "[" +
                 "  [ \"setMailboxes\"," +
@@ -213,7 +213,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnCreatedMailboxWhenChildOfInboxMailbox() throws Exception {
+    public void setMailboxesShouldReturnCreatedMailboxWhenChildOfInboxMailbox() {
         String inboxId =
             with()
                 .accept(ContentType.JSON)
@@ -259,7 +259,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldCreateMailboxWhenChildOfInboxMailbox() throws Exception {
+    public void setMailboxesShouldCreateMailboxWhenChildOfInboxMailbox() {
         String inboxId =
             with()
                 .accept(ContentType.JSON)
@@ -311,7 +311,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnNotCreatedWhenInvalidParentId() throws Exception {
+    public void setMailboxesShouldReturnNotCreatedWhenInvalidParentId() {
         String requestBody =
             "[" +
                 "  [ \"setMailboxes\"," +
@@ -344,7 +344,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnCreatedMailboxWhenCreatingParentThenChildMailboxes() throws Exception {
+    public void setMailboxesShouldReturnCreatedMailboxWhenCreatingParentThenChildMailboxes() {
         String requestBody =
             "[" +
                 "  [ \"setMailboxes\"," +
@@ -383,7 +383,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnCreatedMailboxWhenCreatingChildThenParentMailboxes() throws Exception {
+    public void setMailboxesShouldReturnCreatedMailboxWhenCreatingChildThenParentMailboxes() {
         String requestBody =
             "[" +
                 "  [ \"setMailboxes\"," +
@@ -422,7 +422,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnNotCreatedWhenMailboxAlreadyExists() throws Exception {
+    public void setMailboxesShouldReturnNotCreatedWhenMailboxAlreadyExists() {
         jmapServer.serverProbe().createMailbox("#private", username, "myBox");
         String requestBody =
             "[" +
@@ -455,7 +455,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnNotCreatedWhenCycleDetected() throws Exception {
+    public void setMailboxesShouldReturnNotCreatedWhenCycleDetected() {
         String requestBody =
             "[" +
                 "  [ \"setMailboxes\"," +
@@ -497,7 +497,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnNotCreatedWhenMailboxNameContainsPathDelimiter() throws Exception {
+    public void setMailboxesShouldReturnNotCreatedWhenMailboxNameContainsPathDelimiter() {
         String requestBody =
                 "[" +
                     "  [ \"setMailboxes\"," +
@@ -529,7 +529,7 @@ public abstract class SetMailboxesMethodTest {
                         ));
     }
 
-    public void setMailboxesShouldReturnDestroyedMailbox() throws Exception {
+    public void setMailboxesShouldReturnDestroyedMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myBox");
         Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "myBox");
         String mailboxId = mailbox.getMailboxId().serialize();
@@ -557,7 +557,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldDestroyMailbox() throws Exception {
+    public void setMailboxesShouldDestroyMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myBox");
         Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "myBox");
         String requestBody =
@@ -590,11 +590,11 @@ public abstract class SetMailboxesMethodTest {
         .then()
             .statusCode(200)
             .body(NAME, equalTo("mailboxes"))
-            .body(ARGUMENTS + ".list", hasSize(1)); // Inbox
+            .body(ARGUMENTS + ".list", hasSize(1));
     }
 
     @Test
-    public void setMailboxesShouldReturnNotDestroyedWhenMailboxDoesntExist() throws Exception {
+    public void setMailboxesShouldReturnNotDestroyedWhenMailboxDoesntExist() {
         String requestBody =
             "[" +
                 "  [ \"setMailboxes\"," +
@@ -622,7 +622,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnNotDestroyedWhenMailboxHasChild() throws Exception {
+    public void setMailboxesShouldReturnNotDestroyedWhenMailboxHasChild() {
         jmapServer.serverProbe().createMailbox("#private", username, "myBox");
         jmapServer.serverProbe().createMailbox("#private", username, "myBox.child");
         Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "myBox");
@@ -654,7 +654,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnNotDestroyedWhenSystemMailbox() throws Exception {
+    public void setMailboxesShouldReturnNotDestroyedWhenSystemMailbox() {
         Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "inbox");
         String mailboxId = mailbox.getMailboxId().serialize();
         String requestBody =
@@ -684,7 +684,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnDestroyedWhenParentThenChildMailboxes() throws Exception {
+    public void setMailboxesShouldReturnDestroyedWhenParentThenChildMailboxes() {
         jmapServer.serverProbe().createMailbox("#private", username, "parent");
         Mailbox<?> parentMailbox = jmapServer.serverProbe().getMailbox("#private", username, "parent");
         String parentMailboxId = parentMailbox.getMailboxId().serialize();
@@ -715,7 +715,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnDestroyedWhenChildThenParentMailboxes() throws Exception {
+    public void setMailboxesShouldReturnDestroyedWhenChildThenParentMailboxes() {
         jmapServer.serverProbe().createMailbox("#private", username, "parent");
         Mailbox<?> parentMailbox = jmapServer.serverProbe().getMailbox("#private", username, "parent");
         String parentMailboxId = parentMailbox.getMailboxId().serialize();
@@ -746,7 +746,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnNotUpdatedWhenUnknownMailbox() throws Exception {
+    public void setMailboxesShouldReturnNotUpdatedWhenUnknownMailbox() {
         String requestBody =
                 "[" +
                     "  [ \"setMailboxes\"," +
@@ -777,7 +777,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnUpdatedMailboxIdWhenNoUpdateAskedOnExistingMailbox() throws Exception {
+    public void setMailboxesShouldReturnUpdatedMailboxIdWhenNoUpdateAskedOnExistingMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myBox");
         Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "myBox");
         String mailboxId = mailbox.getMailboxId().serialize();
@@ -808,7 +808,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnUpdatedWhenNameUpdateAskedOnExistingMailbox() throws Exception {
+    public void setMailboxesShouldReturnUpdatedWhenNameUpdateAskedOnExistingMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myBox");
         Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "myBox");
         String mailboxId = mailbox.getMailboxId().serialize();
@@ -840,7 +840,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldUpdateMailboxNameWhenNameUpdateAskedOnExistingMailbox() throws Exception {
+    public void setMailboxesShouldUpdateMailboxNameWhenNameUpdateAskedOnExistingMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myBox");
         Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "myBox");
         String mailboxId = mailbox.getMailboxId().serialize();
@@ -869,18 +869,18 @@ public abstract class SetMailboxesMethodTest {
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .header("Authorization", this.accessToken.serialize())
-            .body("[[\"getMailboxes\", {}, \"#0\"]]")
+            .body("[[\"getMailboxes\", {\"ids\": [\"" + mailboxId + "\"]}, \"#0\"]]")
         .when()
             .post("/jmap")
         .then()
             .statusCode(200)
             .body(NAME, equalTo("mailboxes"))
-            .body(ARGUMENTS + ".list", hasSize(2))
-            .body(ARGUMENTS + ".list.name", hasItems("myRenamedBox"));
+            .body(ARGUMENTS + ".list", hasSize(1))
+            .body(ARGUMENTS + ".list[0].name", equalTo("myRenamedBox"));
     }
 
     @Test
-    public void setMailboxesShouldReturnMailboxIdWhenParentIdUpdateAskedOnOrphanExistingMailbox() throws Exception {
+    public void setMailboxesShouldReturnMailboxIdWhenParentIdUpdateAskedOnOrphanExistingMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myBox");
         Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "myBox");
         String mailboxId = mailbox.getMailboxId().serialize();
@@ -917,7 +917,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldUpdateMailboxParentIdWhenParentIdUpdateAskedOnOrphanExistingMailbox() throws Exception {
+    public void setMailboxesShouldUpdateMailboxParentIdWhenParentIdUpdateAskedOnOrphanExistingMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myPreviousParentBox.myBox");
         Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "myPreviousParentBox.myBox");
         String mailboxId = mailbox.getMailboxId().serialize();
@@ -951,18 +951,18 @@ public abstract class SetMailboxesMethodTest {
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .header("Authorization", this.accessToken.serialize())
-            .body("[[\"getMailboxes\", {}, \"#0\"]]")
+            .body("[[\"getMailboxes\", {\"ids\": [\"" + mailboxId + "\"]}, \"#0\"]]")
         .when()
             .post("/jmap")
         .then()
             .statusCode(200)
             .body(NAME, equalTo("mailboxes"))
-            .body(ARGUMENTS + ".list", hasSize(4))
-            .body(ARGUMENTS + ".list.parentId", hasItems(newParentMailboxId));
+            .body(ARGUMENTS + ".list", hasSize(1))
+            .body(ARGUMENTS + ".list[0].parentId", equalTo(newParentMailboxId));
     }
 
     @Test
-    public void setMailboxesShouldReturnMailboxIdWhenParentIdUpdateAskedOnExistingMailbox() throws Exception {
+    public void setMailboxesShouldReturnMailboxIdWhenParentIdUpdateAskedOnExistingMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myPreviousParentBox");
 
         jmapServer.serverProbe().createMailbox("#private", username, "myPreviousParentBox.myBox");
@@ -1001,7 +1001,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldUpdateMailboxParentIdWhenParentIdUpdateAskedOnExistingMailbox() throws Exception {
+    public void setMailboxesShouldUpdateMailboxParentIdWhenParentIdUpdateAskedOnExistingMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myPreviousParentBox");
 
         jmapServer.serverProbe().createMailbox("#private", username, "myPreviousParentBox.myBox");
@@ -1037,18 +1037,18 @@ public abstract class SetMailboxesMethodTest {
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .header("Authorization", this.accessToken.serialize())
-            .body("[[\"getMailboxes\", {}, \"#0\"]]")
+            .body("[[\"getMailboxes\", {\"ids\": [\"" + mailboxId + "\"]}, \"#0\"]]")
         .when()
             .post("/jmap")
         .then()
             .statusCode(200)
             .body(NAME, equalTo("mailboxes"))
-            .body(ARGUMENTS + ".list", hasSize(4))
-            .body(ARGUMENTS + ".list.parentId", hasItems(newParentMailboxId));
+            .body(ARGUMENTS + ".list", hasSize(1))
+            .body(ARGUMENTS + ".list[0].parentId", equalTo(newParentMailboxId));
     }
 
     @Test
-    public void setMailboxesShouldReturnMailboxIdWhenParentIdUpdateAskedAsOrphanForExistingMailbox() throws Exception {
+    public void setMailboxesShouldReturnMailboxIdWhenParentIdUpdateAskedAsOrphanForExistingMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myPreviousParentBox");
 
         jmapServer.serverProbe().createMailbox("#private", username, "myPreviousParentBox.myBox");
@@ -1083,7 +1083,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldUpdateParentIdWhenAskedAsOrphanForExistingMailbox() throws Exception {
+    public void setMailboxesShouldUpdateParentIdWhenAskedAsOrphanForExistingMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myPreviousParentBox");
 
         jmapServer.serverProbe().createMailbox("#private", username, "myPreviousParentBox.myBox");
@@ -1096,7 +1096,7 @@ public abstract class SetMailboxesMethodTest {
                     "    {" +
                     "      \"update\": {" +
                     "        \"" + mailboxId + "\" : {" +
-                    "          \"parentId\" : null" + //cette ligne ne s'exécute pas correctement donc on regarde pour modifier l'implem d'update
+                    "          \"parentId\" : null" +
                     "        }" +
                     "      }" +
                     "    }," +
@@ -1126,7 +1126,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnMailboxIdWhenNameAndParentIdUpdateForExistingMailbox() throws Exception {
+    public void setMailboxesShouldReturnMailboxIdWhenNameAndParentIdUpdateForExistingMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myPreviousParentBox");
 
         jmapServer.serverProbe().createMailbox("#private", username, "myPreviousParentBox.myBox");
@@ -1136,7 +1136,6 @@ public abstract class SetMailboxesMethodTest {
         jmapServer.serverProbe().createMailbox("#private", username, "myNewParentBox");
         Mailbox<?> newParentMailbox = jmapServer.serverProbe().getMailbox("#private", username, "myNewParentBox");
         String newParentMailboxId = newParentMailbox.getMailboxId().serialize();
-
 
         String requestBody =
                 "[" +
@@ -1167,7 +1166,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShoulUpdateMailboxIAndParentIddWhenBothUpdatedForExistingMailbox() throws Exception {
+    public void setMailboxesShoulUpdateMailboxIAndParentIddWhenBothUpdatedForExistingMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myPreviousParentBox");
 
         jmapServer.serverProbe().createMailbox("#private", username, "myPreviousParentBox.myBox");
@@ -1216,7 +1215,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnNotUpdatedWhenNameContainsPathDelimiter() throws Exception {
+    public void setMailboxesShouldReturnNotUpdatedWhenNameContainsPathDelimiter() {
         jmapServer.serverProbe().createMailbox("#private", username, "myBox");
         Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "myBox");
         String mailboxId = mailbox.getMailboxId().serialize();
@@ -1250,7 +1249,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnNotUpdatedWhenNewParentDoesntExist() throws Exception {
+    public void setMailboxesShouldReturnNotUpdatedWhenNewParentDoesntExist() {
         jmapServer.serverProbe().createMailbox("#private", username, "myBox");
         Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "myBox");
         String mailboxId = mailbox.getMailboxId().serialize();
@@ -1284,7 +1283,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnNotUpdatedWhenUpdatingParentIdOfAParentMailbox() throws Exception {
+    public void setMailboxesShouldReturnNotUpdatedWhenUpdatingParentIdOfAParentMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "root");
 
         jmapServer.serverProbe().createMailbox("#private", username, "root.myBox");

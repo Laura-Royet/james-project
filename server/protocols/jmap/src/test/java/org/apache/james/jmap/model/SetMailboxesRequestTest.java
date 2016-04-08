@@ -21,7 +21,7 @@ package org.apache.james.jmap.model;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.apache.james.jmap.model.mailbox.MailboxRequest;
+import org.apache.james.jmap.model.mailbox.MailboxCreateRequest;
 import org.apache.james.jmap.model.mailbox.MailboxUpdateRequest;
 import org.apache.james.mailbox.exception.MailboxException;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class SetMailboxesRequestTest {
         //Given
         MailboxCreationId creationId = MailboxCreationId.of("creationId");
         String mailboxId = "mailboxId";
-        MailboxRequest mailboxRequest = MailboxRequest.builder()
+        MailboxCreateRequest mailboxRequest = MailboxCreateRequest.builder()
             .name("mailboxRequest")
             .build();
         ImmutableList<String> destroy = ImmutableList.of("destroyId");
