@@ -50,11 +50,11 @@ public class MailboxUpdateRequestTest {
     @Test
     public void getParentIdShouldReturnParentIdWhenParentIdGiven() throws Exception {
         //Given
-        MailboxUpdateRequest testee = MailboxUpdateRequest.builder().parentId("A").name("my box").build() ;
+        String expected = "A";
+        MailboxUpdateRequest testee = MailboxUpdateRequest.builder().parentId(expected).name("my box").build() ;
         //When
         Optional<String> actual = testee.getParentId();
         //Then
-        assertThat(actual).isPresent();
-        assertThat(actual.get()).isEqualTo("A");
+        assertThat(actual).contains(expected);
     }
 }

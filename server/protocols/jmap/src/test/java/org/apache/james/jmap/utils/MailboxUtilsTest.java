@@ -202,25 +202,24 @@ public class MailboxUtilsTest {
         assertThat(mailboxPath).isEmpty();
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalStateException.class)
     public void mailboxPathFromMailboxIdShouldThrowWhenNullMailboxId() throws Exception {
         sut.mailboxPathFromMailboxId(null, mailboxSession);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalStateException.class)
     public void mailboxPathFromMailboxIdShouldThrowWhenNullMailboxSession() throws Exception {
         sut.mailboxPathFromMailboxId("A", null);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalStateException.class)
     public void mailboxPathFromMailboxIdShouldThrowWhenNullMailboxSessionAndMailboxId() throws Exception {
         sut.mailboxPathFromMailboxId(null, null);
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void mailboxPathFromMailboxIdShouldReturnAbsentWhenEmptyMailboxId() throws Exception {
-        Optional<MailboxPath> mailboxPath = sut.mailboxPathFromMailboxId("", mailboxSession);
-        assertThat(mailboxPath).isEmpty();
+        sut.mailboxPathFromMailboxId("", mailboxSession);
     }
 
     @Test

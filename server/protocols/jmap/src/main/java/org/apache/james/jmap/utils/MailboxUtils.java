@@ -41,6 +41,7 @@ import com.github.fge.lambdas.Throwing;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 
 public class MailboxUtils<Id extends MailboxId> {
 
@@ -151,8 +152,8 @@ public class MailboxUtils<Id extends MailboxId> {
     }
 
     public Optional<MailboxPath> mailboxPathFromMailboxId(String mailboxId, MailboxSession mailboxSession) {
-        Preconditions.checkNotNull(mailboxId, "'mailboxId' is mandatory");
-        Preconditions.checkNotNull(mailboxSession, "'mailboxId' is mandatory");
+        Preconditions.checkState(!Strings.isNullOrEmpty(mailboxId), "'mailboxId' is mandatory");
+        Preconditions.checkState(mailboxSession != null, "'mailboxId' is mandatory");
         return mailboxFromMailboxId(mailboxId, mailboxSession)
                 .map(mailbox -> getMailboxPath(mailbox, mailboxSession));
     }
