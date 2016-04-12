@@ -24,6 +24,7 @@ import static com.jayway.restassured.RestAssured.with;
 import static com.jayway.restassured.config.EncoderConfig.encoderConfig;
 import static com.jayway.restassured.config.RestAssuredConfig.newConfig;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
@@ -773,7 +774,7 @@ public abstract class SetMailboxesMethodTest {
             .body(NAME, equalTo("mailboxesSet"))
             .body(ARGUMENTS + ".notUpdated", hasEntry(equalTo("unknown-update-id01"), Matchers.allOf(
                     hasEntry(equalTo("type"), equalTo("notFound")),
-                    hasEntry(equalTo("description"), equalTo("The mailbox 'unknown-update-id01' was not found")))));
+                    hasEntry(equalTo("description"), containsString("unknown-update-id01")))));
     }
 
     @Test
@@ -880,7 +881,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldReturnMailboxIdWhenParentIdUpdateAskedOnOrphanExistingMailbox() {
+    public void setMailboxesShouldReturnMailboxIdWhenMovingToAnotherParentMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myBox");
         Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "myBox");
         String mailboxId = mailbox.getMailboxId().serialize();
@@ -917,7 +918,7 @@ public abstract class SetMailboxesMethodTest {
     }
 
     @Test
-    public void setMailboxesShouldUpdateMailboxParentIdWhenParentIdUpdateAskedOnOrphanExistingMailbox() {
+    public void setMailboxesShouldUpdateMailboxParentIdWhenMovingToAnotherParentMailbox() {
         jmapServer.serverProbe().createMailbox("#private", username, "myPreviousParentBox.myBox");
         Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "myPreviousParentBox.myBox");
         String mailboxId = mailbox.getMailboxId().serialize();
@@ -1110,7 +1111,7 @@ public abstract class SetMailboxesMethodTest {
             .header("Authorization", this.accessToken.serialize())
             .body(requestBody)
             .post("/jmap");
-    
+
         given()
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
@@ -1279,7 +1280,7 @@ public abstract class SetMailboxesMethodTest {
             .body(NAME, equalTo("mailboxesSet"))
             .body(ARGUMENTS + ".notUpdated", hasEntry(equalTo(mailboxId), Matchers.allOf(
                     hasEntry(equalTo("type"), equalTo("notFound")),
-                    hasEntry(equalTo("description"), equalTo("The parent mailbox 'badParent' was not found."))))); 
+                    hasEntry(equalTo("description"), containsString("badParent")))));
     }
 
     @Test
@@ -1324,5 +1325,120 @@ public abstract class SetMailboxesMethodTest {
             .body(ARGUMENTS + ".notUpdated", hasEntry(equalTo(mailboxId), Matchers.allOf(
                     hasEntry(equalTo("type"), equalTo("invalidArguments")),
                     hasEntry(equalTo("description"), equalTo("Cannot update a parent mailbox."))))); 
+    }
+
+    @Test
+    public void setMailboxesShouldReturnNotUpdatedWhenRenamingAMailboxToAnAlreadyExistingMailbox() {
+        jmapServer.serverProbe().createMailbox("#private", username, "myBox");
+        Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "myBox");
+        String mailboxId = mailbox.getMailboxId().serialize();
+
+        jmapServer.serverProbe().createMailbox("#private", username, "mySecondBox");
+
+        String requestBody =
+                "[" +
+                    "  [ \"setMailboxes\"," +
+                    "    {" +
+                    "      \"update\": {" +
+                    "        \"" + mailboxId + "\" : {" +
+                    "          \"name\" : \"mySecondBox\"" +
+                    "        }" +
+                    "      }" +
+                    "    }," +
+                    "    \"#0\"" +
+                    "  ]" +
+                    "]";
+
+        given()
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .header("Authorization", this.accessToken.serialize())
+            .body(requestBody)
+        .when()
+            .post("/jmap")
+        .then()
+            .statusCode(200)
+            .body(NAME, equalTo("mailboxesSet"))
+            .body(ARGUMENTS + ".notUpdated", hasEntry(equalTo(mailboxId), Matchers.allOf(
+                    hasEntry(equalTo("type"), equalTo("invalidArguments")),
+                    hasEntry(equalTo("description"), equalTo("Cannot rename a mailbox to an already existing mailbox."))))); 
+    }
+
+    @Test
+    public void setMailboxesShouldReturnUpdatedWhenRenamingAChildMailbox() {
+        jmapServer.serverProbe().createMailbox("#private", username, "root");
+
+        jmapServer.serverProbe().createMailbox("#private", username, "root.myBox");
+        Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "root.myBox");
+        String mailboxId = mailbox.getMailboxId().serialize();
+
+        String requestBody =
+                "[" +
+                    "  [ \"setMailboxes\"," +
+                    "    {" +
+                    "      \"update\": {" +
+                    "        \"" + mailboxId + "\" : {" +
+                    "          \"name\" : \"mySecondBox\"" +
+                    "        }" +
+                    "      }" +
+                    "    }," +
+                    "    \"#0\"" +
+                    "  ]" +
+                    "]";
+
+        given()
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .header("Authorization", this.accessToken.serialize())
+            .body(requestBody)
+        .when()
+            .post("/jmap")
+        .then()
+            .statusCode(200)
+            .body(NAME, equalTo("mailboxesSet"))
+            .body(ARGUMENTS + ".updated", contains(mailboxId));
+    }
+
+    @Test
+    public void setMailboxesShouldUpdateMailboxNameWhenRenamingAChildMailbox() {
+        jmapServer.serverProbe().createMailbox("#private", username, "root");
+
+        jmapServer.serverProbe().createMailbox("#private", username, "root.myBox");
+        Mailbox<?> mailbox = jmapServer.serverProbe().getMailbox("#private", username, "root.myBox");
+        String mailboxId = mailbox.getMailboxId().serialize();
+
+        String requestBody =
+                "[" +
+                    "  [ \"setMailboxes\"," +
+                    "    {" +
+                    "      \"update\": {" +
+                    "        \"" + mailboxId + "\" : {" +
+                    "          \"name\" : \"mySecondBox\"" +
+                    "        }" +
+                    "      }" +
+                    "    }," +
+                    "    \"#0\"" +
+                    "  ]" +
+                    "]";
+
+        with()
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .header("Authorization", this.accessToken.serialize())
+            .body(requestBody)
+            .post("/jmap");
+
+        given()
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .header("Authorization", this.accessToken.serialize())
+            .body("[[\"getMailboxes\", {\"ids\": [\"" + mailboxId + "\"]}, \"#0\"]]")
+        .when()
+            .post("/jmap")
+        .then()
+            .statusCode(200)
+            .body(NAME, equalTo("mailboxes"))
+            .body(ARGUMENTS + ".list", hasSize(1))
+            .body(ARGUMENTS + ".list[0].name", equalTo("mySecondBox"));
     }
 }

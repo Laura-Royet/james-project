@@ -41,24 +41,16 @@ public class MailboxUpdateRequest {
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
 
-        private Optional<String> id;
         private Optional<String> name;
         private Optional<String> parentId;
         private Optional<Role> role;
         private Optional<SortOrder> sortOrder;
 
         private Builder() {
-            id = Optional.empty();
             name = Optional.empty();
             role = Optional.empty();
             sortOrder = Optional.empty();
             parentId = Optional.empty();
-        }
-
-        public Builder id(String id) {
-            Preconditions.checkNotNull(id);
-            this.id = Optional.of(id);
-            return this;
         }
 
         public Builder name(String name) throws MailboxException {
@@ -69,7 +61,11 @@ public class MailboxUpdateRequest {
         }
 
         public Builder parentId(String parentId) {
-            this.parentId = Optional.ofNullable(parentId);
+            if (parentId == null) {
+                this.parentId = null;
+            } else {
+                this.parentId = Optional.of(parentId);
+            }
             return this;
         }
 
@@ -85,28 +81,22 @@ public class MailboxUpdateRequest {
 
 
         public MailboxUpdateRequest build() {
-            return new MailboxUpdateRequest(id, name, parentId, role, sortOrder);
+            return new MailboxUpdateRequest(name, parentId, role, sortOrder);
         }
     }
 
-    private final Optional<String> id;
     private final Optional<String> name;
     private final Optional<String> parentId;
     private final Optional<Role> role;
     private final Optional<SortOrder> sortOrder;
 
     @VisibleForTesting
-    MailboxUpdateRequest(Optional<String> id, Optional<String> name, Optional<String> parentId, Optional<Role> role, Optional<SortOrder> sortOrder) {
+    MailboxUpdateRequest(Optional<String> name, Optional<String> parentId, Optional<Role> role, Optional<SortOrder> sortOrder) {
 
-        this.id = id;
         this.name = name;
         this.parentId = parentId;
         this.role = role;
         this.sortOrder = sortOrder;
-    }
-
-    public Optional<String> getId() {
-        return id;
     }
 
     public Optional<String> getName() {
@@ -130,8 +120,7 @@ public class MailboxUpdateRequest {
     public final boolean equals(Object obj) {
         if (obj instanceof MailboxUpdateRequest) {
             MailboxUpdateRequest other = (MailboxUpdateRequest) obj;
-            return Objects.equals(this.id, other.id)
-                && Objects.equals(this.name, other.name)
+            return Objects.equals(this.name, other.name)
                 && Objects.equals(this.parentId, other.parentId)
                 && Objects.equals(this.role, other.role)
                 && Objects.equals(this.sortOrder, other.sortOrder);
@@ -141,13 +130,12 @@ public class MailboxUpdateRequest {
 
     @Override
     public final int hashCode() {
-        return Objects.hash(id, name, parentId, role, sortOrder);
+        return Objects.hash(name, parentId, role, sortOrder);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(getClass())
-                .add("id", id)
                 .add("name", name)
                 .add("parentId", parentId)
                 .add("role", role)
