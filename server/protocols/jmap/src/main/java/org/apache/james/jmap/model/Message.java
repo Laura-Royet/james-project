@@ -35,6 +35,8 @@ import org.apache.james.jmap.model.message.EMailer;
 import org.apache.james.jmap.model.message.IndexableMessage;
 import org.apache.james.mailbox.store.extractor.DefaultTextExtractor;
 import org.apache.james.mailbox.store.mail.model.MailboxMessage;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -130,12 +132,13 @@ public class Message {
     }
 
     @VisibleForTesting static String computePreview(String body) {
-        if (body.length() <= 256) {
-            return body;
+        String bodyWithoutTag = Jsoup.parse(body).text();
+        if (bodyWithoutTag.length() <= 256) {
+            return bodyWithoutTag;
         }
-        return body.substring(0, 253) + "...";
-    }
-    
+        return bodyWithoutTag.substring(0, 253) + "...";
+        }
+
     private static ImmutableMap<String, String> toMap(Multimap<String, String> multimap) {
         return multimap
                 .asMap()

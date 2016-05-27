@@ -214,7 +214,7 @@ public abstract class GetMessagesMethodTest {
             .body(ARGUMENTS + ".list[0].subject", equalTo("my test subject"))
             .body(ARGUMENTS + ".list[0].htmlBody", equalTo("This is a <b>HTML</b> mail"))
             .body(ARGUMENTS + ".list[0].isUnread", equalTo(true))
-            .body(ARGUMENTS + ".list[0].preview", equalTo("This is a <b>HTML</b> mail"))
+            .body(ARGUMENTS + ".list[0].preview", equalTo("This is a HTML mail"))
             .body(ARGUMENTS + ".list[0].headers", equalTo(ImmutableMap.of("content-type", "text/html", "subject", "my test subject")))
             .body(ARGUMENTS + ".list[0].date", equalTo("2014-10-30T14:12:00Z"));
     }
