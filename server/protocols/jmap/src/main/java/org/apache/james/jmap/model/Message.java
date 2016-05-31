@@ -35,8 +35,6 @@ import org.apache.james.jmap.model.message.EMailer;
 import org.apache.james.jmap.model.message.IndexableMessage;
 import org.apache.james.mailbox.store.extractor.DefaultTextExtractor;
 import org.apache.james.mailbox.store.mail.model.MailboxMessage;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -54,7 +52,6 @@ import com.google.common.net.MediaType;
 public class Message {
     public static final String NO_SUBJECT = "(No subject)";
     public static final String MULTIVALUED_HEADERS_SEPARATOR = ", ";
-    public static final String NO_BODY = "(Empty)";
     public static final ZoneId UTC_ZONE_ID = ZoneId.of("Z");
 
     public static Builder builder() {
@@ -87,7 +84,7 @@ public class Message {
                 .replyTo(fromElasticSearchEmailers(im.getReplyTo()))
                 .size(im.getSize())
                 .date(getInternalDate(mailboxMessage, im))
-                .preview(getPreview(im))
+                .preview(MessagePreview.from(im))
                 .textBody(getTextBody(im))
                 .htmlBody(getHtmlBody(im))
                 .build();
@@ -122,23 +119,6 @@ public class Message {
                     .build();
     }
     
-    private static String getPreview(IndexableMessage im) {
-        return Optional.ofNullable(
-                Strings.emptyToNull(
-                    im.getBodyText()
-                        .map(Message::computePreview)
-                        .orElse(NO_BODY)))
-            .orElse(NO_BODY);
-    }
-
-    @VisibleForTesting static String computePreview(String body) {
-        String bodyWithoutTag = Jsoup.parse(body).text();
-        if (bodyWithoutTag.length() <= 256) {
-            return bodyWithoutTag;
-        }
-        return bodyWithoutTag.substring(0, 253) + "...";
-        }
-
     private static ImmutableMap<String, String> toMap(Multimap<String, String> multimap) {
         return multimap
                 .asMap()
