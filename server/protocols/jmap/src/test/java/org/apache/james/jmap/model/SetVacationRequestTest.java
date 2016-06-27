@@ -59,7 +59,7 @@ public class SetVacationRequestTest {
             .update(ImmutableMap.of(VACATION_ID, vacationResponse))
             .build();
 
-        assertThat(setVacationRequest.getUpdate()).containsExactly(new AbstractMap.SimpleEntry<>(VACATION_ID, vacationResponse));
+        assertThat(setVacationRequest.getUpdate()).containsEntry(VACATION_ID, vacationResponse);
     }
 
 }

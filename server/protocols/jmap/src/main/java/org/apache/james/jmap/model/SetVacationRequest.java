@@ -42,13 +42,12 @@ public class SetVacationRequest implements JmapRequest {
     public static class Builder {
 
         private Map<String, VacationResponse> update = Maps.newHashMap();
- 
+
         public Builder accountId(String accountId) {
             if (accountId != null) {
                 throw new NotImplementedException();
-            } else {
-                return this;
             }
+            return this;
         }
 
         public Builder update(Map<String, VacationResponse> update) {
