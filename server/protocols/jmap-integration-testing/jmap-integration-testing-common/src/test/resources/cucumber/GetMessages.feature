@@ -49,6 +49,14 @@ Feature: GetMessages method
     And the hasAttachment of the message is "false"
     And the list of attachments of the message is empty
 
+  Scenario: Retrieving message should return messages with non ASCII characters when presents in subject
+    Given the user has a message in "inbox" mailbox with subject "éetèetà" and content "testmail"
+    When the user ask for messages "["username@domain.tld|inbox|1"]"
+    Then no error is returned
+    And the list should contain 1 message
+    And the id of the message is "username@domain.tld|inbox|1"
+    And the subject of the message is "éetèetà"
+
   Scenario Outline: Retrieving message should return messages when exists and is a html message
     Given the user has a message in <mailbox> mailbox with content-type <content-type> subject <subject> and content <content>
     When the user ask for messages "["username@domain.tld|inbox|1"]"

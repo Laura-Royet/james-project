@@ -57,6 +57,7 @@ import static org.apache.james.mailbox.cassandra.table.CassandraMessageTable.Fla
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.charset.CharsetEncoder;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -114,6 +115,7 @@ import com.datastax.driver.core.querybuilder.Select;
 import com.datastax.driver.core.querybuilder.Select.Where;
 import com.github.fge.lambdas.Throwing;
 import com.github.steveash.guavate.Guavate;
+import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteStreams;
@@ -508,7 +510,7 @@ public class CassandraMessageMapper implements MessageMapper {
     }
 
     private ByteBuffer toByteBuffer(InputStream stream) throws IOException {
-        return ByteBuffer.wrap(ByteStreams.toByteArray(stream));
+        return ByteBuffer.wrap(new String(ByteStreams.toByteArray(stream), Charsets.UTF_8).getBytes());
     }
 
     private Where buildQuery(CassandraId mailboxId, MessageRange set, FetchType fetchType) {
