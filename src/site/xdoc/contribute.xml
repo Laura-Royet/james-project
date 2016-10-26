@@ -45,73 +45,6 @@
       </p>
     </section>
 
-    <section name="How to contribute to the code?">
-      <p>
-        Clone the source code of the project from its 
-        <a href="https://github.com/apache/james-project">Github</a>
-        <br />
-        Create a Pull Request with your branch name
-        and prefix its different commits with this name.
-        <br />
-      </p>
-    </section>
-
-    <section name="Code Patches">
-      <p>
-        Patches should be attached to the corresponding JIRA issue.
-        <br />
-        <b>Always</b>
-        use diff -u to generate patches, so we can apply them using
-        'patch'.
-        <br />
-
-         <br />
-        Make sure the patch only contains what is intended, your
-        checkout could be outdated.
-        <br />
-        Make sure it conforms to the code standards, otherwise it may be ignored. It is OK to make a
-        single patch covering several
-        files, but please only one issue at a time.
-        <br />
-        Prefix the JIRA issue subject with [PATCH]
-        <br />
-        Briefly outline the reason for your patch,
-        the solution your patch implements, why a patch is
-        needed and why your code will solve the problem. Note any bug numbers your
-        patch addresses.
-        <br />
-      </p>
-
-      <p>
-        The reason for these rules is so that commiters can easily see
-        what you are trying to achieve,
-        it is their responsibility to manage the code and review submissions,
-        if you make it easy for them to see what you are doing your
-        patch is more likely to
-        be commited quickly (or at all).
-        <br />
-      </p>
-    </section>
-
-    <section name="Adding New Code">
-      <p>
-        Like the principles for patch submission, mark your JIRA issue subject [PATCH]
-        and ensure
-        your submission conforms to the code standards. Provide a Brief outline
-        of
-        your intentions, as above, so that your code can be reviewed easily, and
-        a
-        note of any relevant bug numbers.
-        <br />
-        New files must contain a reference to the Apache licence, copy
-        the header from an existing file.
-        <br />
-        It also helps if you send your files in an archive (tar, zip)
-        which preserves directories make it from james-project
-        directory so we can un-tar your files into the right place.
-      </p>
-    </section>
-
     <section name="Reporting Bugs">
       <p>
         Many improvements come as a direct result of bug reports.
@@ -150,12 +83,53 @@
       </p>
     </section>
 
-    <section name="Fixing Bugs">
+    <section name="How to contribute to the code?">
       <p>
-        If you want to fix a bug, please contribute your changes 
-        according to the guidelines above, in the Code Patches section. 
-        It is much simpler to deal with submissions if they all come 
-        through the same channel.
+        Clone the source code of the project from its 
+        <a href="https://github.com/apache/james-project">Github</a>
+        or its <a href="git://git.apache.org/james-project.git">apache git repository</a>
+        <br />
+        Create your branch and name it with the JIRA ticket number.
+        Create a Pull Request with your branch name 
+        and prefix its different commits with the same name.
+        <br />
+      </p>
+    </section>
+
+    <section name="Code Patches">
+      <p>
+        Patches should be attached to the corresponding JIRA issue.
+        <br />
+        <b>Always</b>
+        use diff -u to generate patches, so we can apply them using
+        'patch'.
+        <br />
+
+         <br />
+        Make sure the patch only contains what is intended, your
+        checkout could be outdated.
+        <br />
+        Make sure it conforms to the code standards, otherwise it may be ignored. It is OK to make a
+        single patch covering several
+        files, but please only one issue at a time.
+        <br />
+        Prefix the JIRA issue subject with [PATCH]
+        <br />
+        Briefly outline the reason for your patch,
+        the solution your patch implements, why a patch is
+        needed and why your code will solve the problem. Note any bug numbers your
+        patch addresses.
+        <br />
+      </p>
+
+      <p>
+        The reason for these rules is so that commiters can easily see
+        what you are trying to achieve,
+        it is their responsibility to manage the code and review submissions,
+        if you make it easy for them to see what you are doing your
+        patch is more likely to
+        be commited quickly.
+        <br />
       </p>
     </section>
 
