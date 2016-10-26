@@ -66,9 +66,6 @@
                 name="James"
                 href="http://james.apache.org/index.html" />
             <item
-                name="Hupa"
-                href="http://james.apache.org/hupa/index.html" />
-            <item
                 name="Mime4J"
                 href="http://james.apache.org/mime4j/index.html" />
             <item
@@ -80,6 +77,9 @@
             <item
                 name="jDKIM"
                 href="http://james.apache.org/jdkim/index.html" />
+            <item
+                name="Hupa"
+                href="http://james.apache.org/hupa/index.html" />
         </links>
 
         <menu
