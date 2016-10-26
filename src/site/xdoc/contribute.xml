@@ -113,8 +113,6 @@
         single patch covering several
         files, but please only one issue at a time.
         <br />
-        Prefix the JIRA issue subject with [PATCH]
-        <br />
         Briefly outline the reason for your patch,
         the solution your patch implements, why a patch is
         needed and why your code will solve the problem. Note any bug numbers your
