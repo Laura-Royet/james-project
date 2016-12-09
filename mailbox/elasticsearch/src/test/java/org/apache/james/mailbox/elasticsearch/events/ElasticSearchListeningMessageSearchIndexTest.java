@@ -33,7 +33,6 @@ import javax.mail.Flags;
 
 import org.apache.james.mailbox.MailboxSession;
 import org.apache.james.mailbox.MessageUid;
-import org.apache.james.mailbox.MailboxSession.User;
 import org.apache.james.mailbox.elasticsearch.ElasticSearchIndexer;
 import org.apache.james.mailbox.elasticsearch.json.MessageToElasticSearchJson;
 import org.apache.james.mailbox.elasticsearch.search.ElasticSearchSearcher;
@@ -51,15 +50,17 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 
-public class ElasticSearchListeningMailboxMessageSearchIndexTest {
+public class ElasticSearchListeningMessageSearchIndexTest {
 
     public static final long MODSEQ = 18L;
     private IMocksControl control;
 
     private ElasticSearchIndexer indexer;
+    private MessageToElasticSearchJson messageToElasticSearchJson;
     private ElasticSearchListeningMessageSearchIndex testee;
     
     @Before
@@ -67,14 +68,14 @@ public class ElasticSearchListeningMailboxMessageSearchIndexTest {
         control = createControl();
 
         MessageMapperFactory mapperFactory = control.createMock(MessageMapperFactory.class);
-        MessageToElasticSearchJson messageToElasticSearchJson = control.createMock(MessageToElasticSearchJson.class);
+        messageToElasticSearchJson = control.createMock(MessageToElasticSearchJson.class);
         ElasticSearchSearcher elasticSearchSearcher = control.createMock(ElasticSearchSearcher.class);
 
         indexer = control.createMock(ElasticSearchIndexer.class);
 
-        List<User> users = anyObject();
-        expect(messageToElasticSearchJson.convertToJson(anyObject(MailboxMessage.class), users)).andReturn("json content").anyTimes();
-        expect(messageToElasticSearchJson.getUpdatedJsonMessagePart(anyObject(Flags.class), anyLong())).andReturn("json updated content").anyTimes();
+        expect(messageToElasticSearchJson.getUpdatedJsonMessagePart(anyObject(Flags.class), anyLong()))
+            .andReturn("json updated content")
+            .anyTimes();
 
         testee = new ElasticSearchListeningMessageSearchIndex(mapperFactory, indexer, elasticSearchSearcher, messageToElasticSearchJson);
     }
@@ -89,9 +90,47 @@ public class ElasticSearchListeningMailboxMessageSearchIndexTest {
         Mailbox mailbox = control.createMock(Mailbox.class);
         MessageUid messageId = MessageUid.of(1);
         TestId mailboxId = TestId.of(12);
-        expect(mailbox.getMailboxId()).andReturn(mailboxId);
+        expect(mailbox.getMailboxId())
+            .andReturn(mailboxId);
         MailboxMessage message = mockedMessage(messageId);
         
+        expect(messageToElasticSearchJson.convertToJson(anyObject(MailboxMessage.class), anyObject()))
+            .andReturn("json content")
+            .once();
+
+        IndexResponse expectedIndexResponse = control.createMock(IndexResponse.class);
+        expect(indexer.indexMessage(eq(mailboxId.serialize() + ":" + messageId), anyString()))
+            .andReturn(expectedIndexResponse);
+        
+        control.replay();
+        testee.add(session, mailbox, message);
+        control.verify();
+    }
+    
+    @Test
+    public void addShouldIndexEmailBodyWhenNotIndexableAttachment() throws Exception {
+        MailboxSession.User user = control.createMock(MailboxSession.User.class);
+        MailboxSession session = control.createMock(MailboxSession.class);
+        expect(session.getUser())
+            .andReturn(user)
+            .times(2);
+
+        Mailbox mailbox = control.createMock(Mailbox.class);
+        MessageUid messageId = MessageUid.of(1);
+        TestId mailboxId = TestId.of(12);
+        expect(mailbox.getMailboxId())
+            .andReturn(mailboxId)
+            .times(2);
+        MailboxMessage message = mockedMessage(messageId);
+        
+        JsonProcessingException expectedJsonProcessingException = control.createMock(JsonProcessingException.class);
+        expect(messageToElasticSearchJson.convertToJson(eq(message), anyObject()))
+            .andThrow(expectedJsonProcessingException)
+            .once();
+        expect(messageToElasticSearchJson.convertToJsonWithoutAttachment(anyObject(MailboxMessage.class), anyObject()))
+            .andReturn("json content")
+            .once();
+
         IndexResponse expectedIndexResponse = control.createMock(IndexResponse.class);
         expect(indexer.indexMessage(eq(mailboxId.serialize() + ":" + messageId), anyString()))
             .andReturn(expectedIndexResponse);
@@ -103,7 +142,9 @@ public class ElasticSearchListeningMailboxMessageSearchIndexTest {
 
     private MailboxMessage mockedMessage(MessageUid messageId) throws IOException {
         MailboxMessage message = control.createMock(MailboxMessage.class);
-        expect(message.getUid()).andReturn(messageId).anyTimes();
+        expect(message.getUid())
+            .andReturn(messageId)
+            .anyTimes();
         return message;
     }
     
@@ -112,17 +153,25 @@ public class ElasticSearchListeningMailboxMessageSearchIndexTest {
         MailboxSession.User user = control.createMock(MailboxSession.User.class);
         MailboxSession session = control.createMock(MailboxSession.class);
         expect(session.getUser())
-            .andReturn(user);
+            .andReturn(user)
+            .times(2);
 
         Mailbox mailbox = control.createMock(Mailbox.class);
-        
         MessageUid messageId = MessageUid.of(1);
         TestId mailboxId = TestId.of(12);
+        expect(mailbox.getMailboxId())
+            .andReturn(mailboxId)
+            .times(2);
         MailboxMessage message = mockedMessage(messageId);
-        expect(mailbox.getMailboxId()).andReturn(mailboxId);
         
-        expect(indexer.indexMessage(eq(mailboxId.serialize() + ":" + messageId), anyString()))
-            .andThrow(new ElasticsearchException(""));
+        JsonProcessingException expectedJsonProcessingException = control.createMock(JsonProcessingException.class);
+        expect(messageToElasticSearchJson.convertToJson(eq(message), anyObject()))
+            .andThrow(expectedJsonProcessingException)
+            .once();
+        JsonProcessingException expectedJsonProcessingException2 = new JsonGenerationException("expected error");
+        expect(messageToElasticSearchJson.convertToJsonWithoutAttachment(anyObject(MailboxMessage.class), anyObject()))
+            .andThrow(expectedJsonProcessingException2)
+            .once();
         
         control.replay();
         testee.add(session, mailbox, message);
@@ -136,7 +185,8 @@ public class ElasticSearchListeningMailboxMessageSearchIndexTest {
         Mailbox mailbox = control.createMock(Mailbox.class);
         MessageUid messageId = MessageUid.of(1);
         TestId mailboxId = TestId.of(12);
-        expect(mailbox.getMailboxId()).andReturn(mailboxId);
+        expect(mailbox.getMailboxId())
+            .andReturn(mailboxId);
         
         BulkResponse expectedBulkResponse = control.createMock(BulkResponse.class);
         expect(indexer.deleteMessages(anyObject(List.class)))
@@ -158,7 +208,9 @@ public class ElasticSearchListeningMailboxMessageSearchIndexTest {
         MessageUid messageId4 = MessageUid.of(4);
         MessageUid messageId5 = MessageUid.of(5);
         TestId mailboxId = TestId.of(12);
-        expect(mailbox.getMailboxId()).andReturn(mailboxId).times(5);
+        expect(mailbox.getMailboxId())
+            .andReturn(mailboxId)
+            .times(5);
 
         BulkResponse expectedBulkResponse = control.createMock(BulkResponse.class);
         expect(indexer.deleteMessages(anyObject(List.class)))
@@ -176,7 +228,9 @@ public class ElasticSearchListeningMailboxMessageSearchIndexTest {
         Mailbox mailbox = control.createMock(Mailbox.class);
         MessageUid messageId = MessageUid.of(1);
         TestId mailboxId = TestId.of(12);
-        expect(mailbox.getMailboxId()).andReturn(mailboxId).times(2);
+        expect(mailbox.getMailboxId())
+            .andReturn(mailboxId)
+            .times(2);
         
         expect(indexer.deleteMessages(anyObject(List.class)))
             .andThrow(new ElasticsearchException(""));
@@ -199,7 +253,8 @@ public class ElasticSearchListeningMailboxMessageSearchIndexTest {
         TestId mailboxId = TestId.of(12);
 
         expectLastCall();
-        expect(mailbox.getMailboxId()).andReturn(mailboxId);
+        expect(mailbox.getMailboxId())
+            .andReturn(mailboxId);
         
         BulkResponse expectedBulkResponse = control.createMock(BulkResponse.class);
         expect(indexer.updateMessages(anyObject(List.class)))
@@ -222,7 +277,9 @@ public class ElasticSearchListeningMailboxMessageSearchIndexTest {
         TestId mailboxId = TestId.of(12);
 
         expectLastCall();
-        expect(mailbox.getMailboxId()).andReturn(mailboxId).times(2);
+        expect(mailbox.getMailboxId())
+            .andReturn(mailboxId)
+            .times(2);
 
         expect(indexer.updateMessages(anyObject(List.class)))
             .andThrow(new ElasticsearchException(""));
@@ -241,7 +298,8 @@ public class ElasticSearchListeningMailboxMessageSearchIndexTest {
         TestId mailboxId = TestId.of(12);
 
         expectLastCall();
-        expect(mailbox.getMailboxId()).andReturn(mailboxId);
+        expect(mailbox.getMailboxId())
+            .andReturn(mailboxId);
 
         indexer.deleteAllMatchingQuery(anyObject(QueryBuilder.class));
         EasyMock.expectLastCall();
@@ -259,7 +317,9 @@ public class ElasticSearchListeningMailboxMessageSearchIndexTest {
         TestId mailboxId = TestId.of(12);
 
         expectLastCall();
-        expect(mailbox.getMailboxId()).andReturn(mailboxId).times(2);
+        expect(mailbox.getMailboxId())
+            .andReturn(mailboxId)
+            .times(2);
 
         indexer.deleteAllMatchingQuery(anyObject(QueryBuilder.class));
         EasyMock.expectLastCall().andThrow(new ElasticsearchException(""));
@@ -268,4 +328,5 @@ public class ElasticSearchListeningMailboxMessageSearchIndexTest {
         testee.deleteAll(session, mailbox);
         control.verify();
     }
+
 }

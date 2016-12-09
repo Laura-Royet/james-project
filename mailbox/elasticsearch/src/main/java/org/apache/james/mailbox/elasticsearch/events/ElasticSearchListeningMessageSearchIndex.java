@@ -103,10 +103,14 @@ public class ElasticSearchListeningMessageSearchIndex extends ListeningMessageSe
         try {
             indexer.indexMessage(indexIdFor(mailbox, message.getUid()), messageToElasticSearchJson.convertToJson(message, ImmutableList.of(session.getUser())));
         } catch (Exception e) {
-            LOGGER.error("Error when indexing message " + message.getUid(), e);
+            try {
+                indexer.indexMessage(indexIdFor(mailbox, message.getUid()), messageToElasticSearchJson.convertToJsonWithoutAttachment(message, ImmutableList.of(session.getUser())));
+            } catch (JsonProcessingException e1) {
+                LOGGER.error("Error when basic indexing of message" + message.getUid(), e1);
+            }
         }
     }
-
+    
     @Override
     public void delete(MailboxSession session, Mailbox mailbox, List<MessageUid> expungedUids) throws MailboxException {
         try {
