@@ -104,9 +104,10 @@ public class ElasticSearchListeningMessageSearchIndex extends ListeningMessageSe
             indexer.indexMessage(indexIdFor(mailbox, message.getUid()), messageToElasticSearchJson.convertToJson(message, ImmutableList.of(session.getUser())));
         } catch (Exception e) {
             try {
+                LOGGER.warn("indexing message %s without attachments ", message.getUid());
                 indexer.indexMessage(indexIdFor(mailbox, message.getUid()), messageToElasticSearchJson.convertToJsonWithoutAttachment(message, ImmutableList.of(session.getUser())));
             } catch (JsonProcessingException e1) {
-                LOGGER.error("Error when basic indexing of message" + message.getUid(), e1);
+                LOGGER.error("Error when indexing message " + message.getUid() + " without its attachment", e1);
             }
         }
     }
@@ -158,7 +159,7 @@ public class ElasticSearchListeningMessageSearchIndex extends ListeningMessageSe
     }
 
     private String indexIdFor(Mailbox mailbox, MessageUid messageId) {
-        return String.join(ID_SEPARATOR, mailbox.getMailboxId().serialize(), String.valueOf(messageId));
+        return String.join(ID_SEPARATOR, mailbox.getMailboxId().serialize(), String.valueOf(messageId.asLong()));
     }
     
 }

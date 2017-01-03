@@ -2539,7 +2539,7 @@ public abstract class SetMessagesMethodTest {
                 "    {" +
                 "      \"create\": { \"" + messageCreationId  + "\" : {" +
                 "        \"from\": { \"name\": \"Me\", \"email\": \"" + fromAddress + "\"}," +
-                "        \"to\": [{ \"name\": \"BOB\", \"email\": \"" + fromAddress + "\"}]," +
+                "        \"to\": [{ \"name\": \"Me\", \"email\": \"" + fromAddress + "\"}]," +
                 "        \"subject\": \"Message with non indexable attachment\"," +
                 "        \"textBody\": \"Test body\"," +
                 "        \"mailboxIds\": [\"" + outboxId + "\"], " +
@@ -2593,7 +2593,7 @@ public abstract class SetMessagesMethodTest {
                 "    {" +
                 "      \"create\": { \"" + messageCreationId  + "\" : {" +
                 "        \"from\": { \"name\": \"Me\", \"email\": \"" + fromAddress + "\"}," +
-                "        \"to\": [{ \"name\": \"BOB\", \"email\": \"" + fromAddress + "\"}]," +
+                "        \"to\": [{ \"name\": \"Me\", \"email\": \"" + fromAddress + "\"}]," +
                 "        \"subject\": \"Message with non indexable attachment\"," +
                 "        \"textBody\": \"Test body\"," +
                 "        \"mailboxIds\": [\"" + outboxId + "\"], " +
@@ -2652,7 +2652,7 @@ public abstract class SetMessagesMethodTest {
                 "    {" +
                 "      \"create\": { \"" + messageCreationId  + "\" : {" +
                 "        \"from\": { \"name\": \"Me\", \"email\": \"" + fromAddress + "\"}," +
-                "        \"to\": [{ \"name\": \"BOB\", \"email\": \"" + fromAddress + "\"}]," +
+                "        \"to\": [{ \"name\": \"Me\", \"email\": \"" + fromAddress + "\"}]," +
                 "        \"subject\": \"Message with non indexable attachment\"," +
                 "        \"textBody\": \"Test body\"," +
                 "        \"mailboxIds\": [\"" + outboxId + "\"], " +
@@ -2685,7 +2685,7 @@ public abstract class SetMessagesMethodTest {
             .post("/jmap")
         .then()
             .statusCode(200)
-            .log().all()//ifValidationFails()
+            .log().ifValidationFails()
             .body(NAME, equalTo("messageList"))
             .body(ARGUMENTS + ".messageIds", hasItem(presumedMessageId));
     }
