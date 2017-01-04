@@ -57,6 +57,8 @@ import com.google.common.collect.Lists;
 
 public class ElasticSearchListeningMessageSearchIndexTest {
     
+    private static final String EXPECTED_JSON_CONTENT = "json content";
+
     public static final long MODSEQ = 18L;
 
     private ElasticSearchIndexer indexer;
@@ -91,15 +93,14 @@ public class ElasticSearchListeningMessageSearchIndexTest {
         MailboxMessage message = mockedMessage(messageId);
         List<User> users = ImmutableList.of(user);
         
-        String expectedJsonContent = "json content";
         when(messageToElasticSearchJson.convertToJson(eq(message), eq(users)))
-            .thenReturn(expectedJsonContent);
+            .thenReturn(EXPECTED_JSON_CONTENT);
         
         //When
         testee.add(session, mailbox, message);
         
         //Then
-        verify(indexer).indexMessage(eq("12:1"), eq(expectedJsonContent));
+        verify(indexer).indexMessage(eq("12:1"), eq(EXPECTED_JSON_CONTENT));
     }
     
         @SuppressWarnings("unchecked")
@@ -123,15 +124,14 @@ public class ElasticSearchListeningMessageSearchIndexTest {
             when(messageToElasticSearchJson.convertToJson(eq(message), eq(users)))
                 .thenThrow(JsonProcessingException.class);
             
-            String expectedJsonContent = "json content";
             when(messageToElasticSearchJson.convertToJsonWithoutAttachment(eq(message), eq(users)))
-                .thenReturn(expectedJsonContent);
+                .thenReturn(EXPECTED_JSON_CONTENT);
             
             //When
             testee.add(session, mailbox, message);
             
             //Then
-            verify(indexer).indexMessage(eq("12:1"), eq(expectedJsonContent));
+            verify(indexer).indexMessage(eq("12:1"), eq(EXPECTED_JSON_CONTENT));
         }
 
         private MailboxMessage mockedMessage(MessageUid messageId) throws IOException {
@@ -260,7 +260,7 @@ public class ElasticSearchListeningMessageSearchIndexTest {
             testee.update(session, mailbox, Lists.newArrayList(updatedFlags));
             
             //Then
-            ImmutableList<UpdatedRepresentation> expectedUpdatedRepresentations = ImmutableList.of(new UpdatedRepresentation(mailboxId.serialize() + ":" + messageId.asLong(), "json updated content"));
+            ImmutableList<UpdatedRepresentation> expectedUpdatedRepresentations = ImmutableList.of(new UpdatedRepresentation("12:1", "json updated content"));
             verify(indexer).updateMessages(expectedUpdatedRepresentations);
         }
 
