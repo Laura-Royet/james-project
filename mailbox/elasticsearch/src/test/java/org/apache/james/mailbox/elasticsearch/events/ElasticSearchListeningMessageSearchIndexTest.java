@@ -277,7 +277,7 @@ public class ElasticSearchListeningMessageSearchIndexTest {
             when(mailbox.getMailboxId())
                 .thenReturn(mailboxId);
 
-            ImmutableList<UpdatedRepresentation> expectedUpdatedRepresentations = ImmutableList.of(new UpdatedRepresentation(mailboxId.serialize() + ":" + messageId.asLong(), "json updated content"));
+            ImmutableList<UpdatedRepresentation> expectedUpdatedRepresentations = ImmutableList.of(new UpdatedRepresentation("12:1", "json updated content"));
             when(indexer.updateMessages(expectedUpdatedRepresentations))
                 .thenThrow(new ElasticsearchException(""));
             
