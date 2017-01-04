@@ -2618,11 +2618,20 @@ public abstract class SetMessagesMethodTest {
         calmlyAwait.atMost(30, TimeUnit.SECONDS).until( () -> isAnyMessageFoundInInbox(accessToken));
 
         String message = ARGUMENTS + ".list[0]";
-        String presumedMessageId = "username@domain.tld|INBOX|1";
 
+        String inboxId = getMailboxId(accessToken, Role.INBOX);
+        String receivedMessageId = 
+            with()
+                .header("Authorization", accessToken.serialize())
+                .body("[[\"getMessageList\", {\"filter\":{\"inMailboxes\":[\"" + inboxId + "\"]}}, \"#0\"]]")
+            .post("/jmap")
+            .then()
+                .extract()
+                .path(ARGUMENTS + ".messageIds[0]");
+        
         given()
             .header("Authorization", accessToken.serialize())
-            .body("[[\"getMessages\", {\"ids\": [\"" + presumedMessageId + "\"]}, \"#0\"]]")
+            .body("[[\"getMessages\", {\"ids\": [\"" + receivedMessageId + "\"]}, \"#0\"]]")
         .when()
             .post("/jmap")
         .then()
@@ -2676,7 +2685,15 @@ public abstract class SetMessagesMethodTest {
 
         calmlyAwait.atMost(30, TimeUnit.SECONDS).until( () -> isAnyMessageFoundInInbox(accessToken));
 
-        String presumedMessageId = "username@domain.tld|INBOX|1";
+        String inboxId = getMailboxId(accessToken, Role.INBOX);
+        String receivedMessageId = 
+            with()
+                .header("Authorization", accessToken.serialize())
+                .body("[[\"getMessageList\", {\"filter\":{\"inMailboxes\":[\"" + inboxId + "\"]}}, \"#0\"]]")
+            .post("/jmap")
+            .then()
+                .extract()
+                .path(ARGUMENTS + ".messageIds[0]");
         
         given()
             .header("Authorization", accessToken.serialize())
@@ -2687,6 +2704,6 @@ public abstract class SetMessagesMethodTest {
             .statusCode(200)
             .log().ifValidationFails()
             .body(NAME, equalTo("messageList"))
-            .body(ARGUMENTS + ".messageIds", hasItem(presumedMessageId));
+            .body(ARGUMENTS + ".messageIds", hasItem(receivedMessageId));
     }
 }
