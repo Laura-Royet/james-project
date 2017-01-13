@@ -106,7 +106,7 @@ public class ICALToHeadersTest {
 
         testee.service(mail);
 
-        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_UID)).isNull();
+        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_UID_HEADER)).isNull();
     }
 
     @Test
@@ -123,7 +123,7 @@ public class ICALToHeadersTest {
 
         testee.service(mail);
 
-        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_UID)).isNull();
+        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_UID_HEADER)).isNull();
     }
 
     @Test
@@ -141,21 +141,19 @@ public class ICALToHeadersTest {
 
         testee.service(mail);
 
-        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_METHOD)).containsOnly("REQUEST");
-        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_UID))
+        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_METHOD_HEADER)).containsOnly("REQUEST");
+        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_UID_HEADER))
             .containsOnly("f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e047feb2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962bc");
-        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_DTSTAMP)).containsOnly("20170106T115036Z");
-        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_RECURRENCE_ID)).isNull();
-        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_SEQUENCE)).containsOnly("0");
+        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_DTSTAMP_HEADER)).containsOnly("20170106T115036Z");
+        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_RECURRENCE_ID_HEADER)).isNull();
+        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_SEQUENCE_HEADER)).containsOnly("0");
     }
 
     @Test
-    public void serviceShouldWriteOnlyOneICalendarToHeaders() throws Exception {
-        Calendar calendar = new CalendarBuilder().build(ClassLoader.getSystemResourceAsStream("ics/meeting.ics"));
-        Calendar calendar_2 = new CalendarBuilder().build(ClassLoader.getSystemResourceAsStream("ics/meeting.ics"));
+    public void serviceShouldNotWriteHeaderWhenPropertyIsAbsent() throws Exception {
+        Calendar calendar = new CalendarBuilder().build(ClassLoader.getSystemResourceAsStream("ics/meeting_without_dtstamp.ics"));
         ImmutableMap<String, Calendar> icals = ImmutableMap.<String, Calendar>builder()
             .put("key", calendar)
-            .put("key2", calendar_2)
             .build();
 
         testee.init(FakeMailetConfig.builder().build());
@@ -166,7 +164,32 @@ public class ICALToHeadersTest {
 
         testee.service(mail);
 
-        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_UID)).hasSize(1);
+        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_METHOD_HEADER)).containsOnly("REQUEST");
+        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_UID_HEADER))
+            .containsOnly("f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e047feb2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962bc");
+        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_DTSTAMP_HEADER)).isNull();
+        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_RECURRENCE_ID_HEADER)).isNull();
+        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_SEQUENCE_HEADER)).containsOnly("0");
+    }
+
+    @Test
+    public void serviceShouldWriteOnlyOneICalendarToHeaders() throws Exception {
+        Calendar calendar = new CalendarBuilder().build(ClassLoader.getSystemResourceAsStream("ics/meeting.ics"));
+        Calendar calendar2 = new CalendarBuilder().build(ClassLoader.getSystemResourceAsStream("ics/meeting_2.ics"));
+        ImmutableMap<String, Calendar> icals = ImmutableMap.<String, Calendar>builder()
+            .put("key", calendar)
+            .put("key2", calendar2)
+            .build();
+
+        testee.init(FakeMailetConfig.builder().build());
+        Mail mail = FakeMail.builder()
+            .mimeMessage(MimeMessageBuilder.defaultMimeMessage())
+            .attribute(ICALToHeader.ATTRIBUTE_DEFAULT_NAME, icals)
+            .build();
+
+        testee.service(mail);
+
+        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_UID_HEADER)).hasSize(1);
     }
 
     @Test
@@ -182,6 +205,6 @@ public class ICALToHeadersTest {
 
         testee.service(mail);
 
-        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_UID)).isNull();
+        assertThat(mail.getMessage().getHeader(ICALToHeader.X_MEETING_UID_HEADER)).isNull();
     }
 }

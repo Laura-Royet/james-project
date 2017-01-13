@@ -21,7 +21,6 @@ package org.apache.james.transport.mailets;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -42,11 +41,11 @@ public class ICALToHeader extends GenericMailet {
     public static final String ATTRIBUTE_PROPERTY = "attribute";
     public static final String ATTRIBUTE_DEFAULT_NAME = "icalendar";
 
-    public static final String X_MEETING_UID = "X-MEETING-UID";
-    public static final String X_MEETING_METHOD = "X-MEETING-METHOD";
-    public static final String X_MEETING_RECURRENCE_ID = "X-MEETING-RECURRENCE-ID";
-    public static final String X_MEETING_SEQUENCE = "X-MEETING-SEQUENCE";
-    public static final String X_MEETING_DTSTAMP = "X-MEETING-DTSTAMP";
+    public static final String X_MEETING_UID_HEADER = "X-MEETING-UID";
+    public static final String X_MEETING_METHOD_HEADER = "X-MEETING-METHOD";
+    public static final String X_MEETING_RECURRENCE_ID_HEADER = "X-MEETING-RECURRENCE-ID";
+    public static final String X_MEETING_SEQUENCE_HEADER = "X-MEETING-SEQUENCE";
+    public static final String X_MEETING_DTSTAMP_HEADER = "X-MEETING-DTSTAMP";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ICALToHeader.class);
 
@@ -80,7 +79,7 @@ public class ICALToHeader extends GenericMailet {
                 writeToHeaders(calendar.get(), mail.getMessage());
             }
         } catch (ClassCastException e) {
-            LOGGER.error("Received a mail with " + attribute + " not being and ICAL object", e);
+            LOGGER.error("Received a mail with {} not being an ICAL object for mail {}", e, attribute, mail.getName());
         }
     }
 
@@ -91,11 +90,11 @@ public class ICALToHeader extends GenericMailet {
 
     private void writeToHeaders(Calendar calendar, MimeMessage mimeMessage) throws MessagingException {
         VEvent vevent = (VEvent) calendar.getComponent("VEVENT");
-        addIfPresent(mimeMessage, X_MEETING_METHOD, calendar.getMethod());
-        addIfPresent(mimeMessage, X_MEETING_UID, vevent.getUid());
-        addIfPresent(mimeMessage, X_MEETING_RECURRENCE_ID, vevent.getRecurrenceId());
-        addIfPresent(mimeMessage, X_MEETING_SEQUENCE, vevent.getSequence());
-        addIfPresent(mimeMessage, X_MEETING_DTSTAMP, vevent.getDateStamp());
+        addIfPresent(mimeMessage, X_MEETING_METHOD_HEADER, calendar.getMethod());
+        addIfPresent(mimeMessage, X_MEETING_UID_HEADER, vevent.getUid());
+        addIfPresent(mimeMessage, X_MEETING_RECURRENCE_ID_HEADER, vevent.getRecurrenceId());
+        addIfPresent(mimeMessage, X_MEETING_SEQUENCE_HEADER, vevent.getSequence());
+        addIfPresent(mimeMessage, X_MEETING_DTSTAMP_HEADER, vevent.getDateStamp());
         mimeMessage.saveChanges();
     }
 
