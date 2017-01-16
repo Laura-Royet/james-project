@@ -20,7 +20,6 @@
 package org.apache.james.transport.mailets;
 
 import java.util.Map;
-import java.util.Optional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -30,6 +29,8 @@ import org.apache.mailet.base.GenericMailet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.fge.lambdas.Throwing;
+import com.github.fge.lambdas.functions.ThrowingFunction;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 
@@ -80,24 +81,22 @@ public class ICALToHeader extends GenericMailet {
     public void init() throws MessagingException {
         attribute = getInitParameter(ATTRIBUTE_PROPERTY, ATTRIBUTE_DEFAULT_NAME);
         if (Strings.isNullOrEmpty(attribute)) {
-            throw new MessagingException("attribute can not be empty or null");
+            throw new MessagingException("Attribute " + attribute + " can not be empty or null");
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void service(Mail mail) throws MessagingException {
         if (mail.getAttribute(attribute) == null) {
             return;
         }
         try {
-            Map<String, Calendar> calendars = (Map<String, Calendar>) mail.getAttribute(attribute);
-            Optional<Calendar> calendar = calendars.values()
+            getCalendarMap(mail)
+                .values()
                 .stream()
-                .findAny();
-            if (calendar.isPresent()) {
-                writeToHeaders(calendar.get(), mail.getMessage());
-            }
+                .findAny()
+                .ifPresent(Throwing.<Calendar>consumer(calendar -> writeToHeaders(calendar, mail))
+                    .sneakyThrow());
         } catch (ClassCastException e) {
             LOGGER.error("Received a mail with {} not being an ICAL object for mail {}", e, attribute, mail.getName());
         }
@@ -108,7 +107,13 @@ public class ICALToHeader extends GenericMailet {
         return attribute;
     }
 
-    private void writeToHeaders(Calendar calendar, MimeMessage mimeMessage) throws MessagingException {
+    @SuppressWarnings("unchecked")
+    private Map<String, Calendar> getCalendarMap(Mail mail) {
+        return (Map<String, Calendar>) mail.getAttribute(attribute);
+    }
+
+    private void writeToHeaders(Calendar calendar, Mail mail) throws MessagingException {
+        MimeMessage mimeMessage = mail.getMessage();
         VEvent vevent = (VEvent) calendar.getComponent("VEVENT");
         addIfPresent(mimeMessage, X_MEETING_METHOD_HEADER, calendar.getMethod());
         addIfPresent(mimeMessage, X_MEETING_UID_HEADER, vevent.getUid());
