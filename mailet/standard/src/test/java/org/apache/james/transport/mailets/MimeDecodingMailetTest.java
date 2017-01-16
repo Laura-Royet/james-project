@@ -113,7 +113,7 @@ public class MimeDecodingMailetTest {
     }
 
     @Test
-    public void serviceShouldSetAttributeWhenNone() throws MessagingException {
+    public void serviceShouldNotSetAttributeWhenNone() throws MessagingException {
         FakeMailetConfig mailetConfig = FakeMailetConfig.builder()
                 .mailetName("Test")
                 .mailetContext(mailetContext)
