@@ -113,7 +113,7 @@ public class MimeDecodingMailetTest {
     }
 
     @Test
-    public void serverShouldSetAttributeWhenNone() throws MessagingException {
+    public void serviceShouldSetAttributeWhenNone() throws MessagingException {
         FakeMailetConfig mailetConfig = FakeMailetConfig.builder()
                 .mailetName("Test")
                 .mailetContext(mailetContext)
@@ -129,7 +129,7 @@ public class MimeDecodingMailetTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void serverShouldChangeAttributeWhenDefined() throws MessagingException {
+    public void serviceShouldChangeAttributeWhenDefined() throws MessagingException {
         FakeMailetConfig mailetConfig = FakeMailetConfig.builder()
                 .mailetName("Test")
                 .mailetContext(mailetContext)
