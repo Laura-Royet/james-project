@@ -20,13 +20,14 @@
 package org.apache.james.transport.mailets;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import javax.mail.MessagingException;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.james.transport.mailets.model.ICAL;
 import org.apache.mailet.Mail;
 import org.apache.mailet.MailAddress;
@@ -38,13 +39,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.github.steveash.guavate.Guavate;
+import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
 
 import net.fortuna.ical4j.model.Calendar;
 
 /**
- * ICALToJsonAttribute takes a map of ICAL4J objects attached as attribute, and output the list of corresponding json as
- * an other attribute.
+ * ICALToJsonAttribute takes a map of ICAL4J objects attached as attribute, and output the map of corresponding json bytes as
+ * an other attribute, with unique String keys.
  *
  * The JSON contains the following fields :
  *
@@ -127,22 +129,23 @@ public class ICALToJsonAttribute extends GenericMailet {
         }
         try {
             Map<String, Calendar> calendars = (Map<String, Calendar>) mail.getAttribute(sourceAttributeName);
-            List<String> collect = calendars.values()
+            Map<String, byte[]> collect = calendars.entrySet()
                 .stream()
                 .flatMap(calendar -> toJson(calendar, mail))
-                .collect(Guavate.toImmutableList());
+                .collect(Guavate.toImmutableMap(Pair::getKey, Pair::getValue));
             mail.setAttribute(destinationAttributeName, (Serializable) collect);
         } catch (ClassCastException e) {
             LOGGER.error("Received a mail with {} not being an ICAL object for mail {}", e, sourceAttributeName, mail.getName());
         }
     }
 
-    private Stream<String> toJson(Calendar calendar, Mail mail) {
+    private Stream<Pair<String, byte[]>> toJson(Map.Entry<String, Calendar> entry, Mail mail) {
         return mail.getRecipients()
             .stream()
-            .map(recipient -> toJson(calendar, recipient, mail.getSender(), mail.getName()))
+            .map(recipient -> toJson(entry.getValue(), recipient, mail.getSender(), mail.getName()))
             .filter(Optional::isPresent)
-            .map(Optional::get);
+            .map(Optional::get)
+            .map(json -> Pair.of(UUID.randomUUID().toString(), json.getBytes(Charsets.UTF_8)));
     }
 
     private Optional<String> toJson(Calendar calendar, MailAddress recipient, MailAddress sender, String mailName) {

@@ -23,6 +23,8 @@ import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 
@@ -36,6 +38,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
@@ -163,7 +166,7 @@ public class ICALToJsonAttributeTest {
             .isNull();
     }
 
-
+    @SuppressWarnings("unchecked")
     @Test
     public void serviceShouldAttachEmptyListWhenNoRecipient() throws Exception {
         testee.init(FakeMailetConfig.builder().build());
@@ -178,7 +181,7 @@ public class ICALToJsonAttributeTest {
             .build();
         testee.service(mail);
 
-        assertThat((List) mail.getAttribute(ICALToJsonAttribute.DEFAULT_DESTINATION_ATTRIBUTE_NAME))
+        assertThat((Map) mail.getAttribute(ICALToJsonAttribute.DEFAULT_DESTINATION_ATTRIBUTE_NAME))
             .isEmpty();
     }
 
@@ -199,18 +202,19 @@ public class ICALToJsonAttributeTest {
             .build();
         testee.service(mail);
 
-        List<String> jsons = (List<String>) mail.getAttribute(ICALToJsonAttribute.DEFAULT_DESTINATION_ATTRIBUTE_NAME);
+        Map<String, byte[]> jsons = (Map<String, byte[]>) mail.getAttribute(ICALToJsonAttribute.DEFAULT_DESTINATION_ATTRIBUTE_NAME);
         assertThat(jsons).hasSize(1);
-        assertThatJson(jsons.get(0)).isEqualTo("{\n" +
-            "\t\"ical\": \"BEGIN:VCALENDAR\\r\\nPRODID:-//Aliasource Groupe LINAGORA//OBM Calendar 3.2.1-rc2//FR\\r\\nCALSCALE:GREGORIAN\\r\\nX-OBM-TIME:1483703436\\r\\nVERSION:2.0\\r\\nMETHOD:REQUEST\\r\\nBEGIN:VEVENT\\r\\nCREATED:20170106T115035Z\\r\\nLAST-MODIFIED:20170106T115036Z\\r\\nDTSTAMP:20170106T115036Z\\r\\nDTSTART:20170111T090000Z\\r\\nDURATION:PT1H30M\\r\\nTRANSP:OPAQUE\\r\\nSEQUENCE:0\\r\\nSUMMARY:Sprint planning #23\\r\\nDESCRIPTION:\\r\\nCLASS:PUBLIC\\r\\nPRIORITY:5\\r\\nORGANIZER;X-OBM-ID=128;CN=Raphael OUAZANA:MAILTO:ouazana@linagora.com\\r\\nX-OBM-DOMAIN:linagora.com\\r\\nX-OBM-DOMAIN-UUID:02874f7c-d10e-102f-acda-0015176f7922\\r\\nLOCATION:Hangout\\r\\nCATEGORIES:\\r\\nX-OBM-COLOR:\\r\\nUID:f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e047feb2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962bc\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Matthieu EXT_BAECHLER;PARTSTAT=NEEDS-ACTION;X-OBM-ID=302:MAILTO:baechler@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Laura ROYET;PARTSTAT=NEEDS-ACTION;X-OBM-ID=723:MAILTO:royet@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Raphael OUAZANA;PARTSTAT=ACCEPTED;X-OBM-ID=128:MAILTO:ouazana@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Luc DUZAN;PARTSTAT=NEEDS-ACTION;X-OBM-ID=715:MAILTO:duzan@linagora.com\\r\\nATTENDEE;CUTYPE=RESOURCE;CN=Salle de reunion Lyon;PARTSTAT=ACCEPTED;X-OBM-ID=66:MAILTO:noreply@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Antoine DUPRAT;PARTSTAT=NEEDS-ACTION;X-OBM-ID=453:MAILTO:duprat@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=\\\"Benoît TELLIER\\\";PARTSTAT=NEEDS-ACTION;X-OBM-ID=623:MAILTO:tellier@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Quynh Quynh N NGUYEN;PARTSTAT=NEEDS-ACTION;X-OBM-ID=769:MAILTO:nguyen@linagora.com\\r\\nEND:VEVENT\\r\\nEND:VCALENDAR\\r\\n\",\n" +
-            "\t\"sender\": \"" + SENDER.asString() + "\",\n" +
-            "\t\"recipient\": \"" + recipient.asString() + "\",\n" +
-            "\t\"uid\": \"f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e047feb2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962bc\",\n" +
-            "\t\"sequence\": \"0\",\n" +
-            "\t\"dtstamp\": \"20170106T115036Z\",\n" +
-            "\t\"method\": \"REQUEST\",\n" +
-            "\t\"recurrence-id\": null\n" +
-            "}");
+        assertThatJson(new String(jsons.values().iterator().next(), Charsets.UTF_8))
+            .isEqualTo("{\n" +
+                "\t\"ical\": \"BEGIN:VCALENDAR\\r\\nPRODID:-//Aliasource Groupe LINAGORA//OBM Calendar 3.2.1-rc2//FR\\r\\nCALSCALE:GREGORIAN\\r\\nX-OBM-TIME:1483703436\\r\\nVERSION:2.0\\r\\nMETHOD:REQUEST\\r\\nBEGIN:VEVENT\\r\\nCREATED:20170106T115035Z\\r\\nLAST-MODIFIED:20170106T115036Z\\r\\nDTSTAMP:20170106T115036Z\\r\\nDTSTART:20170111T090000Z\\r\\nDURATION:PT1H30M\\r\\nTRANSP:OPAQUE\\r\\nSEQUENCE:0\\r\\nSUMMARY:Sprint planning #23\\r\\nDESCRIPTION:\\r\\nCLASS:PUBLIC\\r\\nPRIORITY:5\\r\\nORGANIZER;X-OBM-ID=128;CN=Raphael OUAZANA:MAILTO:ouazana@linagora.com\\r\\nX-OBM-DOMAIN:linagora.com\\r\\nX-OBM-DOMAIN-UUID:02874f7c-d10e-102f-acda-0015176f7922\\r\\nLOCATION:Hangout\\r\\nCATEGORIES:\\r\\nX-OBM-COLOR:\\r\\nUID:f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e047feb2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962bc\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Matthieu EXT_BAECHLER;PARTSTAT=NEEDS-ACTION;X-OBM-ID=302:MAILTO:baechler@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Laura ROYET;PARTSTAT=NEEDS-ACTION;X-OBM-ID=723:MAILTO:royet@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Raphael OUAZANA;PARTSTAT=ACCEPTED;X-OBM-ID=128:MAILTO:ouazana@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Luc DUZAN;PARTSTAT=NEEDS-ACTION;X-OBM-ID=715:MAILTO:duzan@linagora.com\\r\\nATTENDEE;CUTYPE=RESOURCE;CN=Salle de reunion Lyon;PARTSTAT=ACCEPTED;X-OBM-ID=66:MAILTO:noreply@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Antoine DUPRAT;PARTSTAT=NEEDS-ACTION;X-OBM-ID=453:MAILTO:duprat@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=\\\"Benoît TELLIER\\\";PARTSTAT=NEEDS-ACTION;X-OBM-ID=623:MAILTO:tellier@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Quynh Quynh N NGUYEN;PARTSTAT=NEEDS-ACTION;X-OBM-ID=769:MAILTO:nguyen@linagora.com\\r\\nEND:VEVENT\\r\\nEND:VCALENDAR\\r\\n\",\n" +
+                "\t\"sender\": \"" + SENDER.asString() + "\",\n" +
+                "\t\"recipient\": \"" + recipient.asString() + "\",\n" +
+                "\t\"uid\": \"f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e047feb2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962bc\",\n" +
+                "\t\"sequence\": \"0\",\n" +
+                "\t\"dtstamp\": \"20170106T115036Z\",\n" +
+                "\t\"method\": \"REQUEST\",\n" +
+                "\t\"recurrence-id\": null\n" +
+                "}");
     }
 
     @SuppressWarnings("unchecked")
@@ -229,22 +233,24 @@ public class ICALToJsonAttributeTest {
             .build();
         testee.service(mail);
 
-        List<String> jsons = (List<String>) mail.getAttribute(ICALToJsonAttribute.DEFAULT_DESTINATION_ATTRIBUTE_NAME);
+        Map<String, byte[]> jsons = (Map<String, byte[]>) mail.getAttribute(ICALToJsonAttribute.DEFAULT_DESTINATION_ATTRIBUTE_NAME);
         assertThat(jsons).hasSize(2);
-        assertThatJson(jsons.get(0)).isEqualTo("{\n" +
+        List<String> actual = toSortedValueList(jsons);
+
+        assertThatJson(actual.get(0)).isEqualTo("{\n" +
             "\t\"ical\": \"BEGIN:VCALENDAR\\r\\nPRODID:-//Aliasource Groupe LINAGORA//OBM Calendar 3.2.1-rc2//FR\\r\\nCALSCALE:GREGORIAN\\r\\nX-OBM-TIME:1483703436\\r\\nVERSION:2.0\\r\\nMETHOD:REQUEST\\r\\nBEGIN:VEVENT\\r\\nCREATED:20170106T115035Z\\r\\nLAST-MODIFIED:20170106T115036Z\\r\\nDTSTAMP:20170106T115036Z\\r\\nDTSTART:20170111T090000Z\\r\\nDURATION:PT1H30M\\r\\nTRANSP:OPAQUE\\r\\nSEQUENCE:0\\r\\nSUMMARY:Sprint planning #23\\r\\nDESCRIPTION:\\r\\nCLASS:PUBLIC\\r\\nPRIORITY:5\\r\\nORGANIZER;X-OBM-ID=128;CN=Raphael OUAZANA:MAILTO:ouazana@linagora.com\\r\\nX-OBM-DOMAIN:linagora.com\\r\\nX-OBM-DOMAIN-UUID:02874f7c-d10e-102f-acda-0015176f7922\\r\\nLOCATION:Hangout\\r\\nCATEGORIES:\\r\\nX-OBM-COLOR:\\r\\nUID:f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e047feb2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962bc\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Matthieu EXT_BAECHLER;PARTSTAT=NEEDS-ACTION;X-OBM-ID=302:MAILTO:baechler@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Laura ROYET;PARTSTAT=NEEDS-ACTION;X-OBM-ID=723:MAILTO:royet@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Raphael OUAZANA;PARTSTAT=ACCEPTED;X-OBM-ID=128:MAILTO:ouazana@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Luc DUZAN;PARTSTAT=NEEDS-ACTION;X-OBM-ID=715:MAILTO:duzan@linagora.com\\r\\nATTENDEE;CUTYPE=RESOURCE;CN=Salle de reunion Lyon;PARTSTAT=ACCEPTED;X-OBM-ID=66:MAILTO:noreply@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Antoine DUPRAT;PARTSTAT=NEEDS-ACTION;X-OBM-ID=453:MAILTO:duprat@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=\\\"Benoît TELLIER\\\";PARTSTAT=NEEDS-ACTION;X-OBM-ID=623:MAILTO:tellier@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Quynh Quynh N NGUYEN;PARTSTAT=NEEDS-ACTION;X-OBM-ID=769:MAILTO:nguyen@linagora.com\\r\\nEND:VEVENT\\r\\nEND:VCALENDAR\\r\\n\",\n" +
             "\t\"sender\": \"" + SENDER.asString() + "\",\n" +
-            "\t\"recipient\": \"" + MailAddressFixture.OTHER_AT_JAMES.asString() + "\",\n" +
+            "\t\"recipient\": \"" + MailAddressFixture.ANY_AT_JAMES2.asString() + "\",\n" +
             "\t\"uid\": \"f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e047feb2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962bc\",\n" +
             "\t\"sequence\": \"0\",\n" +
             "\t\"dtstamp\": \"20170106T115036Z\",\n" +
             "\t\"method\": \"REQUEST\",\n" +
             "\t\"recurrence-id\": null\n" +
             "}");
-        assertThatJson(jsons.get(1)).isEqualTo("{\n" +
+        assertThatJson(actual.get(1)).isEqualTo("{\n" +
             "\t\"ical\": \"BEGIN:VCALENDAR\\r\\nPRODID:-//Aliasource Groupe LINAGORA//OBM Calendar 3.2.1-rc2//FR\\r\\nCALSCALE:GREGORIAN\\r\\nX-OBM-TIME:1483703436\\r\\nVERSION:2.0\\r\\nMETHOD:REQUEST\\r\\nBEGIN:VEVENT\\r\\nCREATED:20170106T115035Z\\r\\nLAST-MODIFIED:20170106T115036Z\\r\\nDTSTAMP:20170106T115036Z\\r\\nDTSTART:20170111T090000Z\\r\\nDURATION:PT1H30M\\r\\nTRANSP:OPAQUE\\r\\nSEQUENCE:0\\r\\nSUMMARY:Sprint planning #23\\r\\nDESCRIPTION:\\r\\nCLASS:PUBLIC\\r\\nPRIORITY:5\\r\\nORGANIZER;X-OBM-ID=128;CN=Raphael OUAZANA:MAILTO:ouazana@linagora.com\\r\\nX-OBM-DOMAIN:linagora.com\\r\\nX-OBM-DOMAIN-UUID:02874f7c-d10e-102f-acda-0015176f7922\\r\\nLOCATION:Hangout\\r\\nCATEGORIES:\\r\\nX-OBM-COLOR:\\r\\nUID:f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e047feb2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962bc\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Matthieu EXT_BAECHLER;PARTSTAT=NEEDS-ACTION;X-OBM-ID=302:MAILTO:baechler@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Laura ROYET;PARTSTAT=NEEDS-ACTION;X-OBM-ID=723:MAILTO:royet@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Raphael OUAZANA;PARTSTAT=ACCEPTED;X-OBM-ID=128:MAILTO:ouazana@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Luc DUZAN;PARTSTAT=NEEDS-ACTION;X-OBM-ID=715:MAILTO:duzan@linagora.com\\r\\nATTENDEE;CUTYPE=RESOURCE;CN=Salle de reunion Lyon;PARTSTAT=ACCEPTED;X-OBM-ID=66:MAILTO:noreply@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Antoine DUPRAT;PARTSTAT=NEEDS-ACTION;X-OBM-ID=453:MAILTO:duprat@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=\\\"Benoît TELLIER\\\";PARTSTAT=NEEDS-ACTION;X-OBM-ID=623:MAILTO:tellier@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Quynh Quynh N NGUYEN;PARTSTAT=NEEDS-ACTION;X-OBM-ID=769:MAILTO:nguyen@linagora.com\\r\\nEND:VEVENT\\r\\nEND:VCALENDAR\\r\\n\",\n" +
             "\t\"sender\": \"" + SENDER.asString() + "\",\n" +
-            "\t\"recipient\": \"" + MailAddressFixture.ANY_AT_JAMES2.asString() + "\",\n" +
+            "\t\"recipient\": \"" + MailAddressFixture.OTHER_AT_JAMES.asString() + "\",\n" +
             "\t\"uid\": \"f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e047feb2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962bc\",\n" +
             "\t\"sequence\": \"0\",\n" +
             "\t\"dtstamp\": \"20170106T115036Z\",\n" +
@@ -272,9 +278,21 @@ public class ICALToJsonAttributeTest {
             .build();
         testee.service(mail);
 
-        List<String> jsons = (List<String>) mail.getAttribute(ICALToJsonAttribute.DEFAULT_DESTINATION_ATTRIBUTE_NAME);
+        Map<String, byte[]> jsons = (Map<String, byte[]>) mail.getAttribute(ICALToJsonAttribute.DEFAULT_DESTINATION_ATTRIBUTE_NAME);
         assertThat(jsons).hasSize(2);
-        assertThatJson(jsons.get(0)).isEqualTo("{\n" +
+        List<String> actual = toSortedValueList(jsons);
+
+        assertThatJson(actual.get(0)).isEqualTo("{\n" +
+            "\t\"ical\": \"BEGIN:VCALENDAR\\r\\nPRODID:-//Aliasource Groupe LINAGORA//OBM Calendar 3.2.1-rc2//FR\\r\\nCALSCALE:GREGORIAN\\r\\nX-OBM-TIME:1483439571\\r\\nVERSION:2.0\\r\\nMETHOD:REQUEST\\r\\nBEGIN:VEVENT\\r\\nCREATED:20170103T103250Z\\r\\nLAST-MODIFIED:20170103T103250Z\\r\\nDTSTAMP:20170103T103250Z\\r\\nDTSTART:20170120T100000Z\\r\\nDURATION:PT30M\\r\\nTRANSP:OPAQUE\\r\\nSEQUENCE:0\\r\\nSUMMARY:Sprint Social #3 Demo\\r\\nDESCRIPTION:\\r\\nCLASS:PUBLIC\\r\\nPRIORITY:5\\r\\nORGANIZER;X-OBM-ID=468;CN=Attendee 1:MAILTO:attendee1@linagora.com\\r\\nX-OBM-DOMAIN:linagora.com\\r\\nX-OBM-DOMAIN-UUID:02874f7c-d10e-102f-acda-0015176f7922\\r\\nLOCATION:hangout\\r\\nCATEGORIES:\\r\\nX-OBM-COLOR:\\r\\nUID:f1514f44bf39311568d64072ac247c17656ceafde3b4b3eba961c8c5184cdc6ee047feb2aab16e43439a608f28671ab7c10e754c301b1e32001ad51dd20eac2fc7af20abf4093bbe\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Attendee 2;PARTSTAT=NEEDS-ACTION;X-OBM-ID=348:MAILTO:attendee2@linagora.com\\r\\nEND:VEVENT\\r\\nEND:VCALENDAR\\r\\n\",\n" +
+            "\t\"sender\": \"" + SENDER.asString() + "\",\n" +
+            "\t\"recipient\": \"" + recipient.asString() + "\",\n" +
+            "\t\"uid\": \"f1514f44bf39311568d64072ac247c17656ceafde3b4b3eba961c8c5184cdc6ee047feb2aab16e43439a608f28671ab7c10e754c301b1e32001ad51dd20eac2fc7af20abf4093bbe\",\n" +
+            "\t\"sequence\": \"0\",\n" +
+            "\t\"dtstamp\": \"20170103T103250Z\",\n" +
+            "\t\"method\": \"REQUEST\",\n" +
+            "\t\"recurrence-id\": null\n" +
+            "}");
+        assertThatJson(actual.get(1)).isEqualTo("{\n" +
             "\t\"ical\": \"BEGIN:VCALENDAR\\r\\nPRODID:-//Aliasource Groupe LINAGORA//OBM Calendar 3.2.1-rc2//FR\\r\\nCALSCALE:GREGORIAN\\r\\nX-OBM-TIME:1483703436\\r\\nVERSION:2.0\\r\\nMETHOD:REQUEST\\r\\nBEGIN:VEVENT\\r\\nCREATED:20170106T115035Z\\r\\nLAST-MODIFIED:20170106T115036Z\\r\\nDTSTAMP:20170106T115036Z\\r\\nDTSTART:20170111T090000Z\\r\\nDURATION:PT1H30M\\r\\nTRANSP:OPAQUE\\r\\nSEQUENCE:0\\r\\nSUMMARY:Sprint planning #23\\r\\nDESCRIPTION:\\r\\nCLASS:PUBLIC\\r\\nPRIORITY:5\\r\\nORGANIZER;X-OBM-ID=128;CN=Raphael OUAZANA:MAILTO:ouazana@linagora.com\\r\\nX-OBM-DOMAIN:linagora.com\\r\\nX-OBM-DOMAIN-UUID:02874f7c-d10e-102f-acda-0015176f7922\\r\\nLOCATION:Hangout\\r\\nCATEGORIES:\\r\\nX-OBM-COLOR:\\r\\nUID:f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e047feb2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962bc\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Matthieu EXT_BAECHLER;PARTSTAT=NEEDS-ACTION;X-OBM-ID=302:MAILTO:baechler@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Laura ROYET;PARTSTAT=NEEDS-ACTION;X-OBM-ID=723:MAILTO:royet@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Raphael OUAZANA;PARTSTAT=ACCEPTED;X-OBM-ID=128:MAILTO:ouazana@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Luc DUZAN;PARTSTAT=NEEDS-ACTION;X-OBM-ID=715:MAILTO:duzan@linagora.com\\r\\nATTENDEE;CUTYPE=RESOURCE;CN=Salle de reunion Lyon;PARTSTAT=ACCEPTED;X-OBM-ID=66:MAILTO:noreply@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Antoine DUPRAT;PARTSTAT=NEEDS-ACTION;X-OBM-ID=453:MAILTO:duprat@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=\\\"Benoît TELLIER\\\";PARTSTAT=NEEDS-ACTION;X-OBM-ID=623:MAILTO:tellier@linagora.com\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Quynh Quynh N NGUYEN;PARTSTAT=NEEDS-ACTION;X-OBM-ID=769:MAILTO:nguyen@linagora.com\\r\\nEND:VEVENT\\r\\nEND:VCALENDAR\\r\\n\",\n" +
             "\t\"sender\": \"" + SENDER.asString() + "\",\n" +
             "\t\"recipient\": \"" + recipient.asString() + "\",\n" +
@@ -284,15 +302,13 @@ public class ICALToJsonAttributeTest {
             "\t\"method\": \"REQUEST\",\n" +
             "\t\"recurrence-id\": null\n" +
             "}");
-        assertThatJson(jsons.get(1)).isEqualTo("{\n" +
-            "\t\"ical\": \"BEGIN:VCALENDAR\\r\\nPRODID:-//Aliasource Groupe LINAGORA//OBM Calendar 3.2.1-rc2//FR\\r\\nCALSCALE:GREGORIAN\\r\\nX-OBM-TIME:1483439571\\r\\nVERSION:2.0\\r\\nMETHOD:REQUEST\\r\\nBEGIN:VEVENT\\r\\nCREATED:20170103T103250Z\\r\\nLAST-MODIFIED:20170103T103250Z\\r\\nDTSTAMP:20170103T103250Z\\r\\nDTSTART:20170120T100000Z\\r\\nDURATION:PT30M\\r\\nTRANSP:OPAQUE\\r\\nSEQUENCE:0\\r\\nSUMMARY:Sprint Social #3 Demo\\r\\nDESCRIPTION:\\r\\nCLASS:PUBLIC\\r\\nPRIORITY:5\\r\\nORGANIZER;X-OBM-ID=468;CN=Christophe HAMERLING:MAILTO:chamerling@linagora.com\\r\\nX-OBM-DOMAIN:linagora.com\\r\\nX-OBM-DOMAIN-UUID:02874f7c-d10e-102f-acda-0015176f7922\\r\\nLOCATION:hangout\\r\\nCATEGORIES:\\r\\nX-OBM-COLOR:\\r\\nUID:f1514f44bf39311568d64072ac247c17656ceafde3b4b3eba961c8c5184cdc6ee047feb2aab16e43439a608f28671ab7c10e754c301b1e32001ad51dd20eac2fc7af20abf4093bbe\\r\\nATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Michael BAILLY;PARTSTAT=NEEDS-ACTION;X-OBM-ID=348:MAILTO:mbailly@linagora.com\\r\\nEND:VEVENT\\r\\nEND:VCALENDAR\\r\\n\",\n" +
-            "\t\"sender\": \"" + SENDER.asString() + "\",\n" +
-            "\t\"recipient\": \"" + recipient.asString() + "\",\n" +
-            "\t\"uid\": \"f1514f44bf39311568d64072ac247c17656ceafde3b4b3eba961c8c5184cdc6ee047feb2aab16e43439a608f28671ab7c10e754c301b1e32001ad51dd20eac2fc7af20abf4093bbe\",\n" +
-            "\t\"sequence\": \"0\",\n" +
-            "\t\"dtstamp\": \"20170103T103250Z\",\n" +
-            "\t\"method\": \"REQUEST\",\n" +
-            "\t\"recurrence-id\": null\n" +
-            "}");
+    }
+
+    private List<String> toSortedValueList(Map<String, byte[]> jsons) {
+        return jsons.values()
+                .stream()
+                .map(bytes -> new String(bytes, Charsets.UTF_8))
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
