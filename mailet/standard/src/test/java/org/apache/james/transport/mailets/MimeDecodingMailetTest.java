@@ -20,13 +20,11 @@ package org.apache.james.transport.mailets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.util.Map;
 
 import javax.mail.MessagingException;
 
-import org.apache.mailet.Mail;
 import org.apache.mailet.MailetContext;
 import org.apache.mailet.MailetException;
 import org.apache.mailet.base.test.FakeMail;
@@ -74,7 +72,18 @@ public class MimeDecodingMailetTest {
     }
 
     @Test
-    public void serviceShouldThrowWhenAttributeContentIsNotAMap() throws MessagingException {
+    public void initShouldThrowWhenAttributeParameterIsEmpty() throws MessagingException {
+        FakeMailetConfig mailetConfig = FakeMailetConfig.builder()
+                .mailetName("Test")
+                .mailetContext(mailetContext)
+                .setProperty(MimeDecodingMailet.ATTRIBUTE_PARAMETER_NAME, "")
+                .build();
+        expectedException.expect(MailetException.class);
+        testee.init(mailetConfig);
+    }
+
+    @Test
+    public void serviceShouldNotThrowWhenAttributeContentIsNotAMap() throws MessagingException {
         FakeMailetConfig mailetConfig = FakeMailetConfig.builder()
                 .mailetName("Test")
                 .mailetContext(mailetContext)
@@ -82,10 +91,24 @@ public class MimeDecodingMailetTest {
                 .build();
         testee.init(mailetConfig);
 
-        Mail mail = mock(Mail.class);
-        when(mail.getAttribute(MAIL_ATTRIBUTE)).thenReturn(ImmutableList.of());
+        FakeMail mail = FakeMail.defaultFakeMail();
+        mail.setAttribute(MAIL_ATTRIBUTE, ImmutableList.of());
 
-        expectedException.expect(MailetException.class);
+        testee.service(mail);
+    }
+
+    @Test
+    public void serviceShouldNotThrowWhenAttributeContentIsAMapOfWrongTypes() throws MessagingException {
+        FakeMailetConfig mailetConfig = FakeMailetConfig.builder()
+                .mailetName("Test")
+                .mailetContext(mailetContext)
+                .setProperty(MimeDecodingMailet.ATTRIBUTE_PARAMETER_NAME, MAIL_ATTRIBUTE)
+                .build();
+        testee.init(mailetConfig);
+
+        FakeMail mail = FakeMail.defaultFakeMail();
+        mail.setAttribute(MAIL_ATTRIBUTE, ImmutableMap.of("1", "2"));
+
         testee.service(mail);
     }
 
@@ -98,7 +121,7 @@ public class MimeDecodingMailetTest {
                 .build();
         testee.init(mailetConfig);
 
-        Mail mail = mock(Mail.class);
+        FakeMail mail = FakeMail.defaultFakeMail();
 
         testee.service(mail);
         assertThat(mail.getAttribute(MAIL_ATTRIBUTE)).isNull();

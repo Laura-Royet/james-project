@@ -31,11 +31,13 @@ import org.apache.mailet.Mail;
 import org.apache.mailet.MailetException;
 import org.apache.mailet.base.GenericMailet;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 
 /**
- * This mailet decodes a mime attribute values to bytes.
+ * This mailet replace the mail attribute map of key to MimePart
+ * by a map of key to the MimePart content (as bytes).
  * <br />
  * It takes only one parameter:
  * <ul>
@@ -65,35 +67,38 @@ public class MimeDecodingMailet extends GenericMailet {
             return;
         }
 
-        ImmutableMap.Builder<String, byte[]> builder = ImmutableMap.builder();
+        ImmutableMap.Builder<String, byte[]> extractedMimeContentByName = ImmutableMap.builder();
         for (Map.Entry<String, byte[]> entry: getAttributeContent(mail).entrySet()) {
-            builder.put(entry.getKey(), extractContent(entry.getValue()));
+            Optional<byte[]> maybeContent = extractContent(entry.getValue());
+            if (maybeContent.isPresent()) {
+                extractedMimeContentByName.put(entry.getKey(), maybeContent.get());
+            }
         }
-
-        ImmutableMap<String, byte[]> build = builder.build();
-        for (Map.Entry<String, byte[]> entry : build.entrySet()) {
-            System.out.println(entry.getKey() + "  " + new String(entry.getValue()));
-        }
-        mail.setAttribute(attribute, build);
+        mail.setAttribute(attribute, extractedMimeContentByName.build());
     }
 
     @SuppressWarnings("unchecked")
     private Map<String, byte[]> getAttributeContent(Mail mail) throws MailetException {
         Serializable attributeContent = mail.getAttribute(attribute);
         if (! (attributeContent instanceof Map)) {
-            throw new MailetException("Invalid attribute found into attribute "
+            log("Invalid attribute found into attribute "
                     + attribute + "class Map expected but "
                     + attributeContent.getClass() + " found.");
+            return ImmutableMap.of();
         }
         return (Map<String, byte[]>) attributeContent;
     }
 
-    private byte[] extractContent(byte[] rawMime) throws MessagingException {
+    private Optional<byte[]> extractContent(Object rawMime) throws MessagingException {
         try {
-            MimeBodyPart mimeBodyPart = new MimeBodyPart(new ByteArrayInputStream(rawMime));
-            return IOUtils.toByteArray(mimeBodyPart.getInputStream());
+            MimeBodyPart mimeBodyPart = new MimeBodyPart(new ByteArrayInputStream((byte[]) rawMime));
+            return Optional.fromNullable(IOUtils.toByteArray(mimeBodyPart.getInputStream()));
         } catch (IOException e) {
-            throw new MessagingException("Error while extracting content from mime part", e);
+            log("Error while extracting content from mime part", e);
+            return Optional.absent();
+        } catch(ClassCastException e) {
+            log("Invalid map attribute types.", e);
+            return Optional.absent();
         }
     }
 
