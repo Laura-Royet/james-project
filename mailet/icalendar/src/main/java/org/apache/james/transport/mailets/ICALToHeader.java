@@ -37,6 +37,26 @@ import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.VEvent;
 
+/**
+ * ICALToHeader takes a Map of filenames to ICAL4J calendars, will pick the first Calendar,
+ * and add it to the headers of the e-mail.
+ *
+ * The following headers will be added : X_MEETING_UID, X_MEETING_METHOD, X_MEETING_RECURRENCE_ID, X_MEETING_SEQUENCE,
+ * X_MEETING_DTSTAMP
+ *
+ * The only configuration parameter for this mailet is the attribute the ICAL4J Calendar map should be attached to,
+ * named <b>attribute</b>.
+ *
+ * Configuration example :
+ *
+ * <pre>
+ *     <code>
+ *         &lt;mailet matcher=??? class=ICALToHeader&gt;
+ *             &lt;attribute&gt;icalendars&lt;/attribute&gt;
+ *         &lt;/mailet&gt;
+ *     </code>
+ * </pre>
+ */
 public class ICALToHeader extends GenericMailet {
     public static final String ATTRIBUTE_PROPERTY = "attribute";
     public static final String ATTRIBUTE_DEFAULT_NAME = "icalendar";
