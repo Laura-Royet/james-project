@@ -19,6 +19,7 @@
 
 package org.apache.james.transport.mailets.model;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.mailet.MailAddress;
@@ -132,5 +133,26 @@ public class ICAL {
     @JsonProperty("recurrence-id")
     public Optional<String> getRecurrenceId() {
         return recurrenceId;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (o instanceof ICAL) {
+            ICAL that = (ICAL) o;
+            return Objects.equals(that.ical, this.ical)
+                && Objects.equals(that.sender, this.sender)
+                && Objects.equals(that.recipient, this.recipient)
+                && Objects.equals(that.uid, this.uid)
+                && Objects.equals(that.sequence, this.sequence)
+                && Objects.equals(that.dtstamp, this.dtstamp)
+                && Objects.equals(that.method, this.method)
+                && Objects.equals(that.recurrenceId, this.recurrenceId);
+        }
+        return false;
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(ical, sender, recipient, uid, sequence, dtstamp, method, recurrenceId);
     }
 }

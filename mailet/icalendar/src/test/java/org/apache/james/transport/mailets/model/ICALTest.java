@@ -29,6 +29,7 @@ import org.junit.rules.ExpectedException;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.model.Calendar;
+import nl.jqno.equalsverifier.EqualsVerifier;
 
 public class ICALTest {
 
@@ -126,5 +127,10 @@ public class ICALTest {
             "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Quynh Quynh N NGUYEN;PARTSTAT=NEEDS-ACTION;X-OBM-ID=769:MAILTO:nguyen@linagora.com\r\n" +
             "END:VEVENT\r\n" +
             "END:VCALENDAR\r\n");
+    }
+
+    @Test
+    public void equalsAndHashCodeShouldBeWellImplemented() {
+        EqualsVerifier.forClass(ICAL.class).verify();
     }
 }

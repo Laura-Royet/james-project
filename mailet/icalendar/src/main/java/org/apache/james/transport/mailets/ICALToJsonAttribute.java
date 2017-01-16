@@ -118,50 +118,56 @@ public class ICALToJsonAttribute extends GenericMailet {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void service(Mail mail) throws MessagingException {
         if (mail.getAttribute(sourceAttributeName) == null) {
             return;
         }
         if (mail.getSender() == null) {
+            LOGGER.info("Skipping {} because no sender", mail.getName());
             return;
         }
         try {
-            Map<String, Calendar> calendars = (Map<String, Calendar>) mail.getAttribute(sourceAttributeName);
-            Map<String, byte[]> collect = calendars.entrySet()
+            Map<String, Calendar> calendars = getCalendarMap(mail);
+            Map<String, byte[]> jsonsInByteForm = calendars.entrySet()
                 .stream()
                 .flatMap(calendar -> toJson(calendar, mail))
                 .collect(Guavate.toImmutableMap(Pair::getKey, Pair::getValue));
-            mail.setAttribute(destinationAttributeName, (Serializable) collect);
+            mail.setAttribute(destinationAttributeName, (Serializable) jsonsInByteForm);
         } catch (ClassCastException e) {
             LOGGER.error("Received a mail with {} not being an ICAL object for mail {}", e, sourceAttributeName, mail.getName());
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private Map<String, Calendar> getCalendarMap(Mail mail) {
+        return (Map<String, Calendar>) mail.getAttribute(sourceAttributeName);
+    }
+
     private Stream<Pair<String, byte[]>> toJson(Map.Entry<String, Calendar> entry, Mail mail) {
         return mail.getRecipients()
             .stream()
-            .map(recipient -> toJson(entry.getValue(), recipient, mail.getSender(), mail.getName()))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
+            .flatMap(recipient -> toJson(entry.getValue(), recipient, mail.getSender(), mail.getName()))
             .map(json -> Pair.of(UUID.randomUUID().toString(), json.getBytes(Charsets.UTF_8)));
     }
 
-    private Optional<String> toJson(Calendar calendar, MailAddress recipient, MailAddress sender, String mailName) {
+    private Stream<String> toJson(Calendar calendar, MailAddress recipient, MailAddress sender, String mailName) {
         try {
-            return Optional.of(
-                objectMapper.writeValueAsString(ICAL.builder()
-                .from(calendar)
-                .recipient(recipient)
-                .sender(sender)
-                .build()));
+            return Stream.of(objectMapper.writeValueAsString(toICAL(calendar, recipient, sender)));
         } catch (JsonProcessingException e) {
             LOGGER.error("Error while serializing Calendar for mail {}", mailName, e);
-            return Optional.empty();
+            return Stream.of();
         } catch (Exception e) {
             LOGGER.error("Exception caught while attaching ICAL to the email as JSON for mail {}", mailName, e);
-            return Optional.empty();
+            return Stream.of();
         }
+    }
+
+    private ICAL toICAL(Calendar calendar, MailAddress recipient, MailAddress sender) {
+        return ICAL.builder()
+        .from(calendar)
+        .recipient(recipient)
+        .sender(sender)
+        .build();
     }
 }
