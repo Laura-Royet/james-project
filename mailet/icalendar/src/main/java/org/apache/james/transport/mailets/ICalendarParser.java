@@ -33,6 +33,7 @@ import org.apache.mailet.base.GenericMailet;
 import com.github.steveash.guavate.Guavate;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
+
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
@@ -117,7 +118,10 @@ public class ICalendarParser extends GenericMailet {
     private Optional<Calendar> createCalendar(byte[] icsContent) {
         CalendarBuilder builder = new CalendarBuilder();
         try {
-            return Optional.of(builder.build(new ByteArrayInputStream(icsContent)));
+            System.out.println("Parsing");
+            Calendar calendar = builder.build(new ByteArrayInputStream(icsContent));
+            System.out.println("parsed: " + calendar);
+            return Optional.of(calendar);
         } catch (IOException e) {
             log("Error while reading input: " + icsContent, e);
             return Optional.empty();

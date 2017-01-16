@@ -1,0 +1,178 @@
+Return-Path: <mbaechler@linagora.com>
+Received: from obm3-ui.linagora.dc1 (arathi.linagora.dc1 [172.16.18.50])
+	 by imap (Cyrus v2.2.13-Debian-2.2.13-19+squeeze3) with LMTPA;
+	 Thu, 17 Nov 2016 10:08:41 +0100
+X-Sieve: CMU Sieve 2.2
+Received: from localhost (obm3-ui.linagora.dc1 [127.0.0.1])
+	by obm3-ui.linagora.dc1 (Postfix) with ESMTP id CE21DCBF02;
+	Thu, 17 Nov 2016 10:08:41 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at linagora.com
+X-Spam-Flag: NO
+X-Spam-Score: -0.804
+X-Spam-Level:
+X-Spam-Status: No, score=-0.804 tagged_above=-99 required=2
+	tests=[BAYES_00=-1.9, HTML_MESSAGE=0.001, INVALID_DATE=1.096,
+	NO_RELAYS=-0.001] autolearn=no
+Received: from obm3-ui.linagora.dc1 ([127.0.0.1])
+	by localhost (arathi.linagora.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id AfZde91N9BTC; Thu, 17 Nov 2016 10:08:39 +0100 (CET)
+Received: by obm3-ui.linagora.dc1 (Postfix, from userid 33)
+	id C8F5DB5B11; Thu, 17 Nov 2016 10:08:39 +0100 (CET)
+To: Quynh NHU NGUYEN <qnguyen@linagora.com>, Laura ROYET <lroyet@linagora.com>, Antoine DUPRAT <aduprat@linagora.com>, Raphael OUAZANA <rouazana@linagora.com>, =?UTF-8?Q?Beno=C3=AEt=20TELLIER?= <btellier@linagora.com>
+Subject: =?UTF-8?Q?Nouvel=20=C3=A9v=C3=A9nement=20?==?UTF-8?Q?de=20M?=  =?UTF-8?Q?atthieu=20EXT=5FBAECHLER=20?==?UTF-8?Q?:=20Kanban?=  =?UTF-8?Q?=20review?=
+X-PHP-Originating-Script: 0:sendmail.php
+Date: Thu, 17 Nov 16 10:08:39 +0100
+MIME-Version: 1.0
+From: =?UTF-8?Q?Matthieu=20EXT=5FBAECHL?==?UTF-8?Q?ER?= <mbaechler@linagora.com>
+X-OBM-NOTIFICATION-EMAIL: 3.2.1-rc2
+Content-Type: multipart/mixed; boundary="a162ea64789929d8ab16e041343ecd27"
+Message-Id: <20161117090839.C8F5DB5B11@obm3-ui.linagora.dc1>
+
+This is a multi-part message in MIME format.
+--a162ea64789929d8ab16e041343ecd27
+Content-Type: multipart/alternative; boundary="8884a03817950d7c471b0b5804419776"
+
+This is a multi-part message in MIME format.
+--8884a03817950d7c471b0b5804419776
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+Message automatique envoyÃ© par OBM
+------------------------------------------------------------------
+NOUVEAU RENDEZ-VOUS !
+------------------------------------------------------------------
+
+Vous Ãªtes invitÃ©(e) Ã  participer Ã  ce rendez-vous
+
+du              : 21/11/2016 10:00
+au              : 21/11/2016 11:00
+fuseau horaire  : Europe/Paris
+sujet           : Kanban review
+lieu            : hubl.in/james-review
+organisateur    : Matthieu EXT_BAECHLER
+crÃ©Ã© par        : Matthieu EXT_BAECHLER
+participant(s)  : Raphael OUAZANA, Matthieu EXT_BAECHLER, Antoine DUPRAT, BenoÃ®t STG_TELLIER, Laura ROYET, Quynh Quynh N NGUYEN...
+
+:: Pour accepter : 
+https://extranet.linagora.com/calendar/calendar_index.php?action=update_decision&calendar_id=142276&entity_kind=user&rd_decision_event=ACCEPTED
+
+:: Pour refuser : 
+https://extranet.linagora.com/calendar/calendar_index.php?action=update_decision&calendar_id=142276&entity_kind=user&rd_decision_event=DECLINED
+
+:: Pour plus de dÃ©tails : 
+https://extranet.linagora.com/calendar/calendar_index.php?action=detailconsult&calendar_id=142276
+--8884a03817950d7c471b0b5804419776
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+<table style="width:80%; border:1px solid #000; border-collapse:collapse;background:#EFF0F2;font-size:12px;">
+    <tr>
+        <th style="text-align:center; background-color: #509CBC; color:#FFF; font-size:14px" colspan="2">
+          Invitation Ã  un Ã©vÃ©nement
+        </th>
+    </tr>
+    <tr>
+        <td colspan="2">Vous Ãªtes invitÃ©(e) Ã  participer Ã  ce rendez-vous</td>
+    </tr>
+    <tr>
+        <td style="text-align:right;width:20%;padding-right:1em;">Sujet</td><td style="font-weight:bold;">Kanban review</td>
+    </tr>
+    <tr>
+        <td style="text-align:right;padding-right:1em;">Du</td><td style="font-weight:bold;">21/11/2016 10:00</td>
+    </tr>
+    <tr>
+        <td style="text-align:right;padding-right:1em;">Au</td><td style="font-weight:bold;">21/11/2016 11:00</td>
+    </tr>
+    <tr>
+        <td style="text-align:right;padding-right:1em;">Fuseau horaire</td><td style="font-weight:bold;">Europe/Paris</td>
+    </tr>
+    <tr>
+        <td style="text-align:right;padding-right:1em;">Lieu</td><td style="font-weight:bold;">hubl.in/james-review</td>
+    </tr>
+    <tr>
+        <td style="text-align:right;padding-right:1em;">Organisateur</td><td style="font-weight:bold;">Matthieu EXT_BAECHLER</td>
+    </tr>
+    <tr>
+        <td style="text-align:right;padding-right:1em;">CrÃ©Ã© par</td><td style="font-weight:bold;">Matthieu EXT_BAECHLER</td>
+    </tr>
+    <tr>
+        <td style="text-align:right;padding-right:1em;">Participant(s)</td><td style="font-weight:bold;">Raphael OUAZANA, Matthieu EXT_BAECHLER, Antoine DUPRAT, BenoÃ®t STG_TELLIER, Laura ROYET, Quynh Quynh N NGUYEN...</td>
+    </tr>
+    <tr>
+        <td style="text-align:right;" colspan="2">
+          <a href="https://extranet.linagora.com/calendar/calendar_index.php?action=update_decision&calendar_id=142276&entity_kind=user&rd_decision_event=ACCEPTED">Accepter</a>
+          <a href="https://extranet.linagora.com/calendar/calendar_index.php?action=update_decision&calendar_id=142276&entity_kind=user&rd_decision_event=DECLINED">Refuser</a>
+          <a href="https://extranet.linagora.com/calendar/calendar_index.php?action=detailconsult&calendar_id=142276">Plus de dÃ©tails</a>
+        </td>
+    </tr>
+</table>
+
+--8884a03817950d7c471b0b5804419776
+Content-Type: text/calendar; charset=UTF-8; method=REQUEST; charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+QkVHSU46VkNBTEVOREFSDQpQUk9ESUQ6LS8vQWxpYXNvdXJjZSBHcm91cGUgTElOQUdPUkEv
+L09CTSBDYWxlbmRhciAzLjIuMS1yYzIvL0ZSDQpDQUxTQ0FMRTpHUkVHT1JJQU4NClgtT0JN
+LVRJTUU6MTQ3OTM3MzcxOQ0KVkVSU0lPTjoyLjANCk1FVEhPRDpSRVFVRVNUDQpCRUdJTjpW
+RVZFTlQNCkNSRUFURUQ6MjAxNjExMTdUMDkwODM4Wg0KTEFTVC1NT0RJRklFRDoyMDE2MTEx
+N1QwOTA4MzhaDQpEVFNUQU1QOjIwMTYxMTE3VDA5MDgzOFoNCkRUU1RBUlQ6MjAxNjExMjFU
+MDkwMDAwWg0KRFVSQVRJT046UFQxSA0KVFJBTlNQOk9QQVFVRQ0KU0VRVUVOQ0U6MA0KU1VN
+TUFSWTpLYW5iYW4gcmV2aWV3DQpERVNDUklQVElPTjoNCkNMQVNTOlBVQkxJQw0KUFJJT1JJ
+VFk6NQ0KT1JHQU5JWkVSO1gtT0JNLUlEPTMwMjtDTj1NYXR0aGlldSBFWFRfQkFFQ0hMRVI6
+TUFJTFRPOm1iYWVjaGxlckBsaW5hZ29yYS4NCiBjb20NClgtT0JNLURPTUFJTjpsaW5hZ29y
+YS5jb20NClgtT0JNLURPTUFJTi1VVUlEOjAyODc0ZjdjLWQxMGUtMTAyZi1hY2RhLTAwMTUx
+NzZmNzkyMg0KTE9DQVRJT046aHVibC5pbi9qYW1lcy1yZXZpZXcNCkNBVEVHT1JJRVM6DQpY
+LU9CTS1DT0xPUjoNClVJRDpmMTUxNGY0NGJmMzkzMTE1NjhkNjQwNzIxZmQ3Y2NhOWU5NDlk
+NWEyNzNiYzNmN2ZiNTE2ZjA1YjYxOTg1ZmRhZTA0N2ZlDQogYjJhYWIxNmU0MzQzOWE2MDhm
+Mjg2NzFhYjdjMTBlNzU0YzJkZTQ4ZGMxZmQ3MTdhNTdmYmNmOTk3NTA2NmZiMjkzZjgzNDdl
+YzINCkFUVEVOREVFO0NVVFlQRT1JTkRJVklEVUFMO1JTVlA9VFJVRTtDTj1BbnRvaW5lIERV
+UFJBVDtQQVJUU1RBVD1ORUVEUy1BQ1RJDQogT047WC1PQk0tSUQ9NDUzOk1BSUxUTzphZHVw
+cmF0QGxpbmFnb3JhLmNvbQ0KQVRURU5ERUU7Q1VUWVBFPUlORElWSURVQUw7UlNWUD1UUlVF
+O0NOPUJlbm/DrnQgU1RHX1RFTExJRVI7UEFSVFNUQVQ9TkVFRFMtDQogQUNUSU9OO1gtT0JN
+LUlEPTYyMzpNQUlMVE86YnRlbGxpZXJAbGluYWdvcmEuY29tDQpBVFRFTkRFRTtDVVRZUEU9
+SU5ESVZJRFVBTDtSU1ZQPVRSVUU7Q049UXV5bmggUXV5bmggTiBOR1VZRU47UEFSVFNUQVQ9
+TkVFRA0KIFMtQUNUSU9OO1gtT0JNLUlEPTc2OTpNQUlMVE86cW5ndXllbkBsaW5hZ29yYS5j
+b20NCkFUVEVOREVFO0NVVFlQRT1JTkRJVklEVUFMO1JTVlA9VFJVRTtDTj1NYXR0aGlldSBF
+WFRfQkFFQ0hMRVI7UEFSVFNUQVQ9QUNDDQogRVBURUQ7WC1PQk0tSUQ9MzAyOk1BSUxUTzpt
+YmFlY2hsZXJAbGluYWdvcmEuY29tDQpBVFRFTkRFRTtDVVRZUEU9SU5ESVZJRFVBTDtSU1ZQ
+PVRSVUU7Q049UmFwaGFlbCBPVUFaQU5BO1BBUlRTVEFUPU5FRURTLUFDVA0KIElPTjtYLU9C
+TS1JRD0xMjg6TUFJTFRPOnJvdWF6YW5hQGxpbmFnb3JhLmNvbQ0KQVRURU5ERUU7Q1VUWVBF
+PUlORElWSURVQUw7UlNWUD1UUlVFO0NOPUxhdXJhIFJPWUVUO1BBUlRTVEFUPU5FRURTLUFD
+VElPTjsNCiBYLU9CTS1JRD03MjM6TUFJTFRPOmxyb3lldEBsaW5hZ29yYS5jb20NCkVORDpW
+RVZFTlQNCkVORDpWQ0FMRU5EQVINCg==
+--8884a03817950d7c471b0b5804419776--
+--a162ea64789929d8ab16e041343ecd27
+Content-Type: application/ics; name="meeting.ics"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="meeting.ics"
+
+QkVHSU46VkNBTEVOREFSDQpQUk9ESUQ6LS8vQWxpYXNvdXJjZSBHcm91cGUgTElOQUdPUkEv
+L09CTSBDYWxlbmRhciAzLjIuMS1yYzIvL0ZSDQpDQUxTQ0FMRTpHUkVHT1JJQU4NClgtT0JN
+LVRJTUU6MTQ3OTM3MzcxOQ0KVkVSU0lPTjoyLjANCk1FVEhPRDpSRVFVRVNUDQpCRUdJTjpW
+RVZFTlQNCkNSRUFURUQ6MjAxNjExMTdUMDkwODM4Wg0KTEFTVC1NT0RJRklFRDoyMDE2MTEx
+N1QwOTA4MzhaDQpEVFNUQU1QOjIwMTYxMTE3VDA5MDgzOFoNCkRUU1RBUlQ6MjAxNjExMjFU
+MDkwMDAwWg0KRFVSQVRJT046UFQxSA0KVFJBTlNQOk9QQVFVRQ0KU0VRVUVOQ0U6MA0KU1VN
+TUFSWTpLYW5iYW4gcmV2aWV3DQpERVNDUklQVElPTjoNCkNMQVNTOlBVQkxJQw0KUFJJT1JJ
+VFk6NQ0KT1JHQU5JWkVSO1gtT0JNLUlEPTMwMjtDTj1NYXR0aGlldSBFWFRfQkFFQ0hMRVI6
+TUFJTFRPOm1iYWVjaGxlckBsaW5hZ29yYS4NCiBjb20NClgtT0JNLURPTUFJTjpsaW5hZ29y
+YS5jb20NClgtT0JNLURPTUFJTi1VVUlEOjAyODc0ZjdjLWQxMGUtMTAyZi1hY2RhLTAwMTUx
+NzZmNzkyMg0KTE9DQVRJT046aHVibC5pbi9qYW1lcy1yZXZpZXcNCkNBVEVHT1JJRVM6DQpY
+LU9CTS1DT0xPUjoNClVJRDpmMTUxNGY0NGJmMzkzMTE1NjhkNjQwNzIxZmQ3Y2NhOWU5NDlk
+NWEyNzNiYzNmN2ZiNTE2ZjA1YjYxOTg1ZmRhZTA0N2ZlDQogYjJhYWIxNmU0MzQzOWE2MDhm
+Mjg2NzFhYjdjMTBlNzU0YzJkZTQ4ZGMxZmQ3MTdhNTdmYmNmOTk3NTA2NmZiMjkzZjgzNDdl
+YzINCkFUVEVOREVFO0NVVFlQRT1JTkRJVklEVUFMO1JTVlA9VFJVRTtDTj1BbnRvaW5lIERV
+UFJBVDtQQVJUU1RBVD1ORUVEUy1BQ1RJDQogT047WC1PQk0tSUQ9NDUzOk1BSUxUTzphZHVw
+cmF0QGxpbmFnb3JhLmNvbQ0KQVRURU5ERUU7Q1VUWVBFPUlORElWSURVQUw7UlNWUD1UUlVF
+O0NOPUJlbm/DrnQgU1RHX1RFTExJRVI7UEFSVFNUQVQ9TkVFRFMtDQogQUNUSU9OO1gtT0JN
+LUlEPTYyMzpNQUlMVE86YnRlbGxpZXJAbGluYWdvcmEuY29tDQpBVFRFTkRFRTtDVVRZUEU9
+SU5ESVZJRFVBTDtSU1ZQPVRSVUU7Q049UXV5bmggUXV5bmggTiBOR1VZRU47UEFSVFNUQVQ9
+TkVFRA0KIFMtQUNUSU9OO1gtT0JNLUlEPTc2OTpNQUlMVE86cW5ndXllbkBsaW5hZ29yYS5j
+b20NCkFUVEVOREVFO0NVVFlQRT1JTkRJVklEVUFMO1JTVlA9VFJVRTtDTj1NYXR0aGlldSBF
+WFRfQkFFQ0hMRVI7UEFSVFNUQVQ9QUNDDQogRVBURUQ7WC1PQk0tSUQ9MzAyOk1BSUxUTzpt
+YmFlY2hsZXJAbGluYWdvcmEuY29tDQpBVFRFTkRFRTtDVVRZUEU9SU5ESVZJRFVBTDtSU1ZQ
+PVRSVUU7Q049UmFwaGFlbCBPVUFaQU5BO1BBUlRTVEFUPU5FRURTLUFDVA0KIElPTjtYLU9C
+TS1JRD0xMjg6TUFJTFRPOnJvdWF6YW5hQGxpbmFnb3JhLmNvbQ0KQVRURU5ERUU7Q1VUWVBF
+PUlORElWSURVQUw7UlNWUD1UUlVFO0NOPUxhdXJhIFJPWUVUO1BBUlRTVEFUPU5FRURTLUFD
+VElPTjsNCiBYLU9CTS1JRD03MjM6TUFJTFRPOmxyb3lldEBsaW5hZ29yYS5jb20NCkVORDpW
+RVZFTlQNCkVORDpWQ0FMRU5EQVINCg==
+--a162ea64789929d8ab16e041343ecd27--

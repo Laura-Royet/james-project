@@ -21,7 +21,6 @@ package org.apache.james.transport.mailets;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -131,6 +130,7 @@ public class ICALToJsonAttribute extends GenericMailet {
             Map<String, Calendar> calendars = getCalendarMap(mail);
             Map<String, byte[]> jsonsInByteForm = calendars.entrySet()
                 .stream()
+                .peek(map -> System.out.println("in stream"))
                 .flatMap(calendar -> toJson(calendar, mail))
                 .collect(Guavate.toImmutableMap(Pair::getKey, Pair::getValue));
             mail.setAttribute(destinationAttributeName, (Serializable) jsonsInByteForm);
@@ -147,13 +147,16 @@ public class ICALToJsonAttribute extends GenericMailet {
     private Stream<Pair<String, byte[]>> toJson(Map.Entry<String, Calendar> entry, Mail mail) {
         return mail.getRecipients()
             .stream()
+            .peek(System.out::println)
             .flatMap(recipient -> toJson(entry.getValue(), recipient, mail.getSender(), mail.getName()))
             .map(json -> Pair.of(UUID.randomUUID().toString(), json.getBytes(Charsets.UTF_8)));
     }
 
     private Stream<String> toJson(Calendar calendar, MailAddress recipient, MailAddress sender, String mailName) {
         try {
-            return Stream.of(objectMapper.writeValueAsString(toICAL(calendar, recipient, sender)));
+            String writeValueAsString = objectMapper.writeValueAsString(toICAL(calendar, recipient, sender));
+            System.out.println("Json: " + writeValueAsString);
+            return Stream.of(writeValueAsString);
         } catch (JsonProcessingException e) {
             LOGGER.error("Error while serializing Calendar for mail {}", mailName, e);
             return Stream.of();

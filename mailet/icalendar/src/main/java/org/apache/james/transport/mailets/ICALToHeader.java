@@ -29,9 +29,8 @@ import org.apache.mailet.base.GenericMailet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.fge.lambdas.Throwing;
-import com.github.fge.lambdas.functions.ThrowingFunction;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
 
 import net.fortuna.ical4j.model.Calendar;
@@ -91,12 +90,18 @@ public class ICALToHeader extends GenericMailet {
             return;
         }
         try {
-            getCalendarMap(mail)
-                .values()
-                .stream()
-                .findAny()
-                .ifPresent(Throwing.<Calendar>consumer(calendar -> writeToHeaders(calendar, mail))
-                    .sneakyThrow());
+//            getCalendarMap(mail)
+//                .values()
+//                .stream()
+//                .findAny()
+//                .ifPresent(Throwing.<Calendar>consumer(calendar -> writeToHeaders(calendar, mail))
+//                    .sneakyThrow());
+            MimeMessage mimeMessage = mail.getMessage();
+            Map<String, Calendar> map = (Map<String, Calendar>) mail.getAttribute(attribute);
+            for (Map.Entry<String, Calendar> entry : map.entrySet()) {
+                writeToHeaders(entry.getValue(), mimeMessage);
+            }
+//            mimeMessage.saveChanges();
         } catch (ClassCastException e) {
             LOGGER.error("Received a mail with {} not being an ICAL object for mail {}", e, attribute, mail.getName());
         }
@@ -112,21 +117,21 @@ public class ICALToHeader extends GenericMailet {
         return (Map<String, Calendar>) mail.getAttribute(attribute);
     }
 
-    private void writeToHeaders(Calendar calendar, Mail mail) throws MessagingException {
-        MimeMessage mimeMessage = mail.getMessage();
+    private void writeToHeaders(Calendar calendar, MimeMessage mimeMessage) throws MessagingException {
         VEvent vevent = (VEvent) calendar.getComponent("VEVENT");
         addIfPresent(mimeMessage, X_MEETING_METHOD_HEADER, calendar.getMethod());
         addIfPresent(mimeMessage, X_MEETING_UID_HEADER, vevent.getUid());
         addIfPresent(mimeMessage, X_MEETING_RECURRENCE_ID_HEADER, vevent.getRecurrenceId());
         addIfPresent(mimeMessage, X_MEETING_SEQUENCE_HEADER, vevent.getSequence());
         addIfPresent(mimeMessage, X_MEETING_DTSTAMP_HEADER, vevent.getDateStamp());
-        mimeMessage.saveChanges();
     }
 
     private void addIfPresent(MimeMessage mimeMessage, String headerName, Property property) {
         if (property != null) {
             try {
-                mimeMessage.addHeader(headerName, property.getValue());
+                String value = new String(property.getValue().getBytes(), Charsets.US_ASCII);
+                System.out.println("Add header: " + headerName + " " + value);
+                mimeMessage.addHeader(headerName, value);
             } catch (MessagingException e) {
                 LOGGER.warn("Could not add header {} with value {}", headerName, property.getValue());
             }
