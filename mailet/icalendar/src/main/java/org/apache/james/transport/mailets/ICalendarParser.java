@@ -22,14 +22,16 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import javax.mail.MessagingException;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.mailet.Mail;
 import org.apache.mailet.base.GenericMailet;
 
-import com.google.common.base.Optional;
+import com.github.steveash.guavate.Guavate;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
@@ -58,11 +60,11 @@ import net.fortuna.ical4j.model.Calendar;
  * </p>
  */
 public class ICalendarParser extends GenericMailet {
-    private static final String SOURCE_ATTRIBUTE_PARAMETER_NAME = "sourceAttribute";
-    private static final String DESTINATION_ATTRIBUTE_PARAMETER_NAME = "destinationAttribute";
+    public static final String SOURCE_ATTRIBUTE_PARAMETER_NAME = "sourceAttribute";
+    public static final String DESTINATION_ATTRIBUTE_PARAMETER_NAME = "destinationAttribute";
 
-    private static final String SOURCE_ATTRIBUTE_PARAMETER_DEFAULT_VALUE = "icsAttachments";
-    private static final String DESTINATION_ATTRIBUTE_PARAMETER_DEFAULT_VALUE = "calendars";
+    public static final String SOURCE_ATTRIBUTE_PARAMETER_DEFAULT_VALUE = "icsAttachments";
+    public static final String DESTINATION_ATTRIBUTE_PARAMETER_DEFAULT_VALUE = "calendars";
 
     private String sourceAttributeName;
     private String destinationAttributeName;
@@ -79,6 +81,16 @@ public class ICalendarParser extends GenericMailet {
         }
     }
 
+    @VisibleForTesting
+    public String getSourceAttributeName() {
+        return sourceAttributeName;
+    }
+
+    @VisibleForTesting
+    public String getDestinationAttributeName() {
+        return destinationAttributeName;
+    }
+
     @Override
     public void service(Mail mail) throws MessagingException {
         Object icsAttachmentsObj = mail.getAttribute(sourceAttributeName);
@@ -89,22 +101,14 @@ public class ICalendarParser extends GenericMailet {
         Map<String, byte[]> icsAttachments = (Map<String, byte[]>) icsAttachmentsObj;
         Map<String, Calendar> calendars = icsAttachments.entrySet()
             .stream()
-            .collect(
-                Collectors.toMap(e -> e.getKey(), e -> createCalendar(e.getValue())))
-            .entrySet()
-            .stream()
-            .filter(optCal -> optCal.getValue().isPresent())
-            .collect(
-                Collectors.toMap(p -> p.getKey(), p -> p.getValue().get())
-            );
+            .map(entry -> Pair.of(entry.getKey(), createCalendar(entry.getValue())))
+            .filter(pair -> pair.getValue().isPresent())
+            .map(pair -> Pair.of(pair.getKey(), pair.getValue().get()))
+            .collect(Guavate.toImmutableMap(Pair::getKey, Pair::getValue));
+
         mail.setAttribute(destinationAttributeName, (Serializable) calendars);
     }
 
-    /**
-     * returns a String describing this mailet.
-     *
-     * @return A desciption of this mailet
-     */
     @Override
     public String getMailetInfo() {
         return "Calendar Parser";
@@ -116,10 +120,10 @@ public class ICalendarParser extends GenericMailet {
             return Optional.of(builder.build(new ByteArrayInputStream(icsContent)));
         } catch (IOException e) {
             log("Error while reading input: " + icsContent, e);
-            return Optional.absent();
+            return Optional.empty();
         } catch (ParserException e) {
             log("Error while parsing ICal object: " + icsContent, e);
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 }

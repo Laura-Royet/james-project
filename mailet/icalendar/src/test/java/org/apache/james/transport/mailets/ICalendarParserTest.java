@@ -20,6 +20,7 @@ package org.apache.james.transport.mailets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -63,16 +64,66 @@ public class ICalendarParserTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    private ICalendarParser mailet;
+    private ICalendarParser mailet = new ICalendarParser();
 
-    @Before
-    public void setup() throws Exception {
-        mailet = new ICalendarParser();
-        FakeMailetConfig mailetConfiguration = FakeMailetConfig.builder()
+    @Test
+    public void initShouldSetSourceAttributeWhenAbsent() throws Exception {
+        mailet.init(FakeMailetConfig.builder()
             .mailetName("ICalendarParser")
-            .build();
+            .build());
 
-        mailet.init(mailetConfiguration);
+        assertThat(mailet.getSourceAttributeName()).isEqualTo(ICalendarParser.SOURCE_ATTRIBUTE_PARAMETER_DEFAULT_VALUE);
+    }
+
+    @Test
+    public void initShouldSetDestinationAttributeWhenAbsent() throws Exception {
+        mailet.init(FakeMailetConfig.builder()
+            .mailetName("ICalendarParser")
+            .build());
+
+        assertThat(mailet.getDestinationAttributeName()).isEqualTo(ICalendarParser.DESTINATION_ATTRIBUTE_PARAMETER_DEFAULT_VALUE);
+    }
+
+    @Test
+    public void initShouldSetSourceAttributeWhenPresent() throws Exception {
+        String sourceAttribute = "sourceAttribute";
+        mailet.init(FakeMailetConfig.builder()
+            .mailetName("ICalendarParser")
+            .setProperty(ICalendarParser.SOURCE_ATTRIBUTE_PARAMETER_NAME, sourceAttribute)
+            .build());
+
+        assertThat(mailet.getSourceAttributeName()).isEqualTo(sourceAttribute);
+    }
+
+    @Test
+    public void initShouldSetDestinationAttributeWhenPresent() throws Exception {
+        String destinationAttribute = "destinationAttribute";
+        mailet.init(FakeMailetConfig.builder()
+            .mailetName("ICalendarParser")
+            .setProperty(ICalendarParser.DESTINATION_ATTRIBUTE_PARAMETER_NAME, destinationAttribute)
+            .build());
+
+        assertThat(mailet.getDestinationAttributeName()).isEqualTo(destinationAttribute);
+    }
+
+    @Test
+    public void initShouldThrowOnEmptySourceAttribute() throws Exception {
+        expectedException.expect(MessagingException.class);
+
+        mailet.init(FakeMailetConfig.builder()
+            .mailetName("ICalendarParser")
+            .setProperty(ICalendarParser.SOURCE_ATTRIBUTE_PARAMETER_NAME, "")
+            .build());
+    }
+
+    @Test
+    public void initShouldThrowOnEmptyDestinationAttribute() throws Exception {
+        expectedException.expect(MessagingException.class);
+
+        mailet.init(FakeMailetConfig.builder()
+            .mailetName("ICalendarParser")
+            .setProperty(ICalendarParser.DESTINATION_ATTRIBUTE_PARAMETER_NAME, "")
+            .build());
     }
 
     @Test
@@ -88,7 +139,7 @@ public class ICalendarParserTest {
 
         mailet.service(mail);
 
-        assertThat(mail.getAttribute(DESTINATION_CUSTOM_ATTRIBUTE)).isNull();
+        assertThat(mail.getAttributeNames()).isEmpty();
     }
 
     @Test
@@ -137,10 +188,12 @@ public class ICalendarParserTest {
             .build();
         mailet.init(mailetConfiguration);
 
-        ImmutableMap.Builder attachments = ImmutableMap.builder();
-        attachments.put("one", RIGHT_ICAL_VALUE.getBytes());
+        Map<String, byte[]> attachments = ImmutableMap.<String, byte[]>builder()
+            .put("key", RIGHT_ICAL_VALUE.getBytes())
+            .build();
+
         Mail mail = FakeMail.builder()
-            .attribute(SOURCE_CUSTOM_ATTRIBUTE, attachments.build())
+            .attribute(SOURCE_CUSTOM_ATTRIBUTE, (Serializable) attachments)
             .build();
 
         mailet.service(mail);
@@ -158,17 +211,18 @@ public class ICalendarParserTest {
             .build();
         mailet.init(mailetConfiguration);
 
-        ImmutableMap.Builder attachments = ImmutableMap.builder();
-        attachments.put("one", WRONG_ICAL_VALUE.getBytes());
-        attachments.put("two", RIGHT_ICAL_VALUE.getBytes());
+        Map<String, byte[]> attachments = ImmutableMap.<String, byte[]>builder()
+            .put("key1", WRONG_ICAL_VALUE.getBytes())
+            .put("key2", RIGHT_ICAL_VALUE.getBytes())
+            .build();
         Mail mail = FakeMail.builder()
-            .attribute(SOURCE_CUSTOM_ATTRIBUTE, attachments.build())
+            .attribute(SOURCE_CUSTOM_ATTRIBUTE, (Serializable) attachments)
             .build();
 
         mailet.service(mail);
 
         Map<String, Calendar> expectedCalendars = (Map<String, Calendar>)mail.getAttribute(DESTINATION_CUSTOM_ATTRIBUTE);
-        Map.Entry<String, Calendar> expectedCalendar = Maps.immutableEntry("two", new Calendar());
+        Map.Entry<String, Calendar> expectedCalendar = Maps.immutableEntry("key2", new Calendar());
 
         assertThat(expectedCalendars).hasSize(1)
             .containsExactly(expectedCalendar);
