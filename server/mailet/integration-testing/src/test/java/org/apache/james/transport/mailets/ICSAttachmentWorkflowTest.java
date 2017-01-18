@@ -49,6 +49,7 @@ import org.apache.mailet.MailAddress;
 import org.apache.mailet.base.test.FakeMail;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
@@ -82,7 +83,7 @@ public class ICSAttachmentWorkflowTest {
     private static final String EXCHANGE_NAME = "myExchange";
     private static final String ROUTING_KEY = "myRoutingKey";
     
-    private static final String TEST_ATTACHMENT_CONTENT = "BEGIN:VCALENDAR\n" +
+    private static final String TEST_ATTACHMENT_CONTENT_1 = "BEGIN:VCALENDAR\n" +
         "PRODID:-//Aliasource Groupe LINAGORA//OBM Calendar 3.2.1-rc2//FR\n" +
         "CALSCALE:GREGORIAN\n" +
         "X-OBM-TIME:1483703436\n" +
@@ -126,6 +127,96 @@ public class ICSAttachmentWorkflowTest {
         " S-ACTION;X-OBM-ID=769:MAILTO:nguyen@linagora.com\n" +
         "END:VEVENT\n" +
         "END:VCALENDAR\n";
+    
+    private static final String TEST_ATTACHMENT_CONTENT_2 = "BEGIN:VCALENDAR\n" +
+            "PRODID:-//Aliasource Groupe LINAGORA//OBM Calendar 3.2.1-rc2//FR\n" +
+            "CALSCALE:GREGORIAN\n" +
+            "X-OBM-TIME:1483703436\n" +
+            "VERSION:2.0\n" +
+            "METHOD:REQUEST\n" +
+            "BEGIN:VEVENT\n" +
+            "CREATED:20170106T115035Z\n" +
+            "LAST-MODIFIED:20170106T115036Z\n" +
+            "DTSTAMP:20170106T115037Z\n" +
+            "DTSTART:20170111T090000Z\n" +
+            "DURATION:PT1H30M\n" +
+            "TRANSP:OPAQUE\n" +
+            "SEQUENCE:1\n" +
+            "SUMMARY:Sprint planning #23\n" +
+            "DESCRIPTION:\n" +
+            "CLASS:PUBLIC\n" +
+            "PRIORITY:5\n" +
+            "ORGANIZER;X-OBM-ID=128;CN=Raphael OUAZANA:MAILTO:ouazana@linagora.com\n" +
+            "X-OBM-DOMAIN:linagora.com\n" +
+            "X-OBM-DOMAIN-UUID:02874f7c-d10e-102f-acda-0015176f7922\n" +
+            "LOCATION:Hangout\n" +
+            "CATEGORIES:\n" +
+            "X-OBM-COLOR:\n" +
+            "UID:f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e047fe\n" +
+            " b2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962bd\n" +
+            "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Matthieu EXT_BAECHLER;PARTSTAT=NEE\n" +
+            " DS-ACTION;X-OBM-ID=302:MAILTO:baechler@linagora.com\n" +
+            "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Laura ROYET;PARTSTAT=NEEDS-ACTION;\n" +
+            " X-OBM-ID=723:MAILTO:royet@linagora.com\n" +
+            "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Raphael OUAZANA;PARTSTAT=ACCEPTED;\n" +
+            " X-OBM-ID=128:MAILTO:ouazana@linagora.com\n" +
+            "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Luc DUZAN;PARTSTAT=NEEDS-ACTION;X-\n" +
+            " OBM-ID=715:MAILTO:duzan@linagora.com\n" +
+            "ATTENDEE;CUTYPE=RESOURCE;CN=Salle de reunion Lyon;PARTSTAT=ACCEPTED;X-OBM-\n" +
+            " ID=66:MAILTO:noreply@linagora.com\n" +
+            "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Antoine DUPRAT;PARTSTAT=NEEDS-ACTI\n" +
+            " ON;X-OBM-ID=453:MAILTO:duprat@linagora.com\n" +
+            "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Benoît TELLIER;PARTSTAT=NEEDS-ACTI\n" +
+            " ON;X-OBM-ID=623:MAILTO:tellier@linagora.com\n" +
+            "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Quynh Quynh N NGUYEN;PARTSTAT=NEED\n" +
+            " S-ACTION;X-OBM-ID=769:MAILTO:nguyen@linagora.com\n" +
+            "END:VEVENT\n" +
+            "END:VCALENDAR\n";
+    
+    private static final String TEST_ATTACHMENT_CONTENT_3 = "BEGIN:VCALENDAR\n" +
+            "PRODID:-//Aliasource Groupe LINAGORA//OBM Calendar 3.2.1-rc2//FR\n" +
+            "CALSCALE:GREGORIAN\n" +
+            "X-OBM-TIME:1483703436\n" +
+            "VERSION:2.0\n" +
+            "METHOD:REQUEST\n" +
+            "BEGIN:VEVENT\n" +
+            "CREATED:20170106T115035Z\n" +
+            "LAST-MODIFIED:20170106T115036Z\n" +
+            "DTSTAMP:20170106T115038Z\n" +
+            "DTSTART:20170111T090000Z\n" +
+            "DURATION:PT1H30M\n" +
+            "TRANSP:OPAQUE\n" +
+            "SEQUENCE:2\n" +
+            "SUMMARY:Sprint planning #23\n" +
+            "DESCRIPTION:\n" +
+            "CLASS:PUBLIC\n" +
+            "PRIORITY:5\n" +
+            "ORGANIZER;X-OBM-ID=128;CN=Raphael OUAZANA:MAILTO:ouazana@linagora.com\n" +
+            "X-OBM-DOMAIN:linagora.com\n" +
+            "X-OBM-DOMAIN-UUID:02874f7c-d10e-102f-acda-0015176f7922\n" +
+            "LOCATION:Hangout\n" +
+            "CATEGORIES:\n" +
+            "X-OBM-COLOR:\n" +
+            "UID:f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e047fe\n" +
+            " b2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962be\n" +
+            "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Matthieu EXT_BAECHLER;PARTSTAT=NEE\n" +
+            " DS-ACTION;X-OBM-ID=302:MAILTO:baechler@linagora.com\n" +
+            "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Laura ROYET;PARTSTAT=NEEDS-ACTION;\n" +
+            " X-OBM-ID=723:MAILTO:royet@linagora.com\n" +
+            "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Raphael OUAZANA;PARTSTAT=ACCEPTED;\n" +
+            " X-OBM-ID=128:MAILTO:ouazana@linagora.com\n" +
+            "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Luc DUZAN;PARTSTAT=NEEDS-ACTION;X-\n" +
+            " OBM-ID=715:MAILTO:duzan@linagora.com\n" +
+            "ATTENDEE;CUTYPE=RESOURCE;CN=Salle de reunion Lyon;PARTSTAT=ACCEPTED;X-OBM-\n" +
+            " ID=66:MAILTO:noreply@linagora.com\n" +
+            "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Antoine DUPRAT;PARTSTAT=NEEDS-ACTI\n" +
+            " ON;X-OBM-ID=453:MAILTO:duprat@linagora.com\n" +
+            "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Benoît TELLIER;PARTSTAT=NEEDS-ACTI\n" +
+            " ON;X-OBM-ID=623:MAILTO:tellier@linagora.com\n" +
+            "ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Quynh Quynh N NGUYEN;PARTSTAT=NEED\n" +
+            " S-ACTION;X-OBM-ID=769:MAILTO:nguyen@linagora.com\n" +
+            "END:VEVENT\n" +
+            "END:VCALENDAR\n";
 
     public SwarmGenericContainer rabbitMqContainer = new SwarmGenericContainer("rabbitmq:3")
             .withAffinityToContainer();
@@ -242,7 +333,7 @@ public class ICSAttachmentWorkflowTest {
         MimeBodyPart part = new MimeBodyPart();
         part.setText("simple text");
         multiPart.addBodyPart(part);
-        multiPart.addBodyPart(createAttachmentBodyPart(TEST_ATTACHMENT_CONTENT.getBytes(Charsets.UTF_8), "test.txt"));
+        multiPart.addBodyPart(createAttachmentBodyPart(TEST_ATTACHMENT_CONTENT_1.getBytes(Charsets.UTF_8), "test.txt"));
         
         message.setSubject("test");
         message.setContent(multiPart);
@@ -263,8 +354,122 @@ public class ICSAttachmentWorkflowTest {
         
         boolean autoAck = true;
         GetResponse basicGet = channel.basicGet(queueName, autoAck);
-        assertThat(basicGet.getBody()).isEqualTo(TEST_ATTACHMENT_CONTENT);
+        assertThat(basicGet.getBody()).isEqualTo(TEST_ATTACHMENT_CONTENT_1);
     }
+
+    @Test
+    public void headersShouldNotBeAddedInMailWhenNoICalAttachment() throws Exception {
+        MimeMessage message = new MimeMessage(Session
+                .getDefaultInstance(new Properties()));
+        
+        MimeMultipart multiPart = new MimeMultipart();
+        MimeBodyPart part = new MimeBodyPart();
+        part.setText("simple text");
+        multiPart.addBodyPart(part);
+        
+        message.setSubject("test");
+        message.setContent(multiPart);
+        message.saveChanges();
+        
+        Mail mail = FakeMail.builder()
+              .mimeMessage(message)
+              .sender(new MailAddress(FROM))
+              .recipient(new MailAddress(RECIPIENT))
+              .build();
+
+        try (SMTPMessageSender messageSender = SMTPMessageSender.noAuthentication(LOCALHOST_IP, SMTP_PORT, JAMES_APACHE_ORG);
+                IMAPMessageReader imapMessageReader = new IMAPMessageReader(LOCALHOST_IP, IMAP_PORT)) {
+            messageSender.sendMessage(mail);
+            calmlyAwait.atMost(Duration.ONE_MINUTE).until(messageSender::messageHasBeenSent);
+            calmlyAwait.atMost(Duration.ONE_MINUTE).until(() -> imapMessageReader.userReceivedMessage(RECIPIENT, PASSWORD));
+
+        String receivedMail = imapMessageReader.readFirstMessageInInbox(RECIPIENT, PASSWORD);
+        
+        assertThat(receivedMail).doesNotContain("X-MEETING-UID");
+        assertThat(receivedMail).doesNotContain("X-MEETING-METHOD");
+        assertThat(receivedMail).doesNotContain("X-MEETING-RECURRENCE-ID");
+        assertThat(receivedMail).doesNotContain("X-MEETING-SEQUENCE");
+        assertThat(receivedMail).doesNotContain("X-MEETING-DTSTAMP");
+        }
+    }
+
+    @Test
+    public void headersShouldBeAddedInMailWhenOneICalAttachment() throws Exception {
+        MimeMessage message = new MimeMessage(Session
+                .getDefaultInstance(new Properties()));
+        
+        MimeMultipart multiPart = new MimeMultipart();
+        MimeBodyPart part = new MimeBodyPart();
+        part.setText("simple text");
+        multiPart.addBodyPart(part);
+        multiPart.addBodyPart(createAttachmentBodyPart(TEST_ATTACHMENT_CONTENT_1.getBytes(Charsets.UTF_8), "test.txt"));
+        
+        message.setSubject("test");
+        message.setContent(multiPart);
+        message.saveChanges();
+        
+        Mail mail = FakeMail.builder()
+              .mimeMessage(message)
+              .sender(new MailAddress(FROM))
+              .recipient(new MailAddress(RECIPIENT))
+              .build();
+
+        try (SMTPMessageSender messageSender = SMTPMessageSender.noAuthentication(LOCALHOST_IP, SMTP_PORT, JAMES_APACHE_ORG);
+                IMAPMessageReader imapMessageReader = new IMAPMessageReader(LOCALHOST_IP, IMAP_PORT)) {
+            messageSender.sendMessage(mail);
+            calmlyAwait.atMost(Duration.ONE_MINUTE).until(messageSender::messageHasBeenSent);
+            calmlyAwait.atMost(Duration.ONE_MINUTE).until(() -> imapMessageReader.userReceivedMessage(RECIPIENT, PASSWORD));
+
+        String receivedMail = imapMessageReader.readFirstMessageInInbox(RECIPIENT, PASSWORD);
+        
+        assertThat(receivedMail).contains("X-MEETING-UID: f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e" +
+                 "047feb2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962bc");
+        assertThat(receivedMail).contains("X-MEETING-METHOD: REQUEST");
+        assertThat(receivedMail).contains("X-MEETING-SEQUENCE: 0");
+        assertThat(receivedMail).contains("X-MEETING-DTSTAMP: 20170106T115036Z");
+        }
+    }
+
+    @Ignore("See JIRA issue MAILET-151")
+    @Test
+    public void headersShouldBeFilledOnlyWithOneICalAttachmentWhenMailHasSeveral() throws Exception {
+        MimeMessage message = new MimeMessage(Session
+                .getDefaultInstance(new Properties()));
+        
+        MimeMultipart multiPart = new MimeMultipart();
+        MimeBodyPart part = new MimeBodyPart();
+        part.setText("simple text");
+        multiPart.addBodyPart(part);
+        multiPart.addBodyPart(createAttachmentBodyPart(TEST_ATTACHMENT_CONTENT_1.getBytes(Charsets.UTF_8), "test.txt"));
+        multiPart.addBodyPart(createAttachmentBodyPart(TEST_ATTACHMENT_CONTENT_2.getBytes(Charsets.UTF_8), "test.txt"));
+        multiPart.addBodyPart(createAttachmentBodyPart(TEST_ATTACHMENT_CONTENT_3.getBytes(Charsets.UTF_8), "test.txt"));
+        
+        message.setSubject("test");
+        message.setContent(multiPart);
+        message.saveChanges();
+        
+        Mail mail = FakeMail.builder()
+              .mimeMessage(message)
+              .sender(new MailAddress(FROM))
+              .recipient(new MailAddress(RECIPIENT))
+              .build();
+
+        try (SMTPMessageSender messageSender = SMTPMessageSender.noAuthentication(LOCALHOST_IP, SMTP_PORT, JAMES_APACHE_ORG);
+                IMAPMessageReader imapMessageReader = new IMAPMessageReader(LOCALHOST_IP, IMAP_PORT)) {
+            messageSender.sendMessage(mail);
+            calmlyAwait.atMost(Duration.ONE_MINUTE).until(messageSender::messageHasBeenSent);
+            calmlyAwait.atMost(Duration.ONE_MINUTE).until(() -> imapMessageReader.userReceivedMessage(RECIPIENT, PASSWORD));
+
+        String receivedMail = imapMessageReader.readFirstMessageInInbox(RECIPIENT, PASSWORD);
+        
+        //Here only the third ICal attachment is used to fill headers
+        assertThat(receivedMail).contains("X-MEETING-UID: f1514f44bf39311568d640727cff54e819573448d09d2e5677987ff29caa01a9e" +
+                "047feb2aab16e43439a608f28671ab7c10e754ce92be513f8e04ae9ff15e65a9819cf285a6962be");
+        assertThat(receivedMail).contains("X-MEETING-SEQUENCE: 2");
+        assertThat(receivedMail).contains("X-MEETING-DTSTAMP: 20170106T115038Z");
+        }
+    }
+
 
     private MimeBodyPart createAttachmentBodyPart(byte[] body, String fileName) throws MessagingException, UnsupportedEncodingException {
         MimeBodyPart part = createBodyPart(body);
