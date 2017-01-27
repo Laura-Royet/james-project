@@ -1,0 +1,312 @@
+Return-Path: <julien-v.petit@gendarmerie.interieur.gouv.fr>
+Received: from obm3-ui.linagora.dc1 (arathi.linagora.dc1 [172.16.18.50])
+	 by imap (Cyrus v2.2.13-Debian-2.2.13-19+squeeze3) with LMTPA;
+	 Tue, 03 Jan 2017 16:05:16 +0100
+X-Sieve: CMU Sieve 2.2
+Received: from localhost (obm3-ui.linagora.dc1 [127.0.0.1])
+	by obm3-ui.linagora.dc1 (Postfix) with ESMTP id DEB0832E34;
+	Tue,  3 Jan 2017 16:05:16 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at linagora.com
+X-Spam-Flag: NO
+X-Spam-Score: 0
+X-Spam-Level:
+X-Spam-Status: No, score=x tagged_above=-99 required=2 WHITELISTED tests=[]
+	autolearn=unavailable
+Received: from obm3-ui.linagora.dc1 ([127.0.0.1])
+	by localhost (arathi.linagora.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id p_wwOXzE0DvX; Tue,  3 Jan 2017 16:05:16 +0100 (CET)
+Received: from boxmsg6.pfai.rie.gouv.fr (boxmsg6.pfai.rie.gouv.fr [185.24.185.30])
+	by obm3-ui.linagora.dc1 (Postfix) with ESMTP id AAB7D32E2D
+	for <ddolcimascolo@linagora.com>; Tue,  3 Jan 2017 16:05:16 +0100 (CET)
+Received: from boxmsg6.pfai.rie.gouv.fr (localhost [127.0.0.1])
+	by localhost (Postfix) with SMTP id 3ttHLN4TtMz1xt1
+	for <ddolcimascolo@linagora.com>; Tue,  3 Jan 2017 16:05:16 +0100 (CET)
+Message-ID: <586BBD9D.6030303@gendarmerie.interieur.gouv.fr>
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+	d=gendarmerie.interieur.gouv.fr; s=mail; t=1483455916;
+	bh=tym7Sjca45HttQbL998y4nj2k3dAcqKkIeOog2LpadE=;
+	h=Date:From:To:Subject:References:In-Reply-To:Cc:From;
+	b=jh02LBgdaIL77oZRdYJT1tDahoCLToEdtHnv6S6iMylNExqrGHQvItRwimwi/3Bda
+	 VfTnQ6ZiQb8WqcuBs7QC6elIhJhT0reIAtBwa7QnIQtl1D4ZwX/GfZPJ92anxi0gVP
+	 kJ2XpKKf1rA9ILHg8ezLcjvZ6zikcq1CckJmBsy8=
+Date: Tue, 03 Jan 2017 16:05:01 +0100
+From: "Petit Julien CEN ( BMPN SDAC STSISI )"
+ <julien-v.petit@gendarmerie.interieur.gouv.fr>
+MIME-Version: 1.0
+To: David DOLCIMASCOLO <ddolcimascolo@linagora.com>
+Subject: Re: [Internet] Re: [Internet] Rendez-vous Linagora <> GN
+References: <9b6a4271-69fb-217a-5c14-c68c68375d96@linagora.com>
+ <58593F7B.2080604@gendarmerie.interieur.gouv.fr>
+ <d5c6f1d6-96e7-8172-9fe6-41fa6c9bd6ec@linagora.com>
+In-Reply-To: <d5c6f1d6-96e7-8172-9fe6-41fa6c9bd6ec@linagora.com>
+X-Gie-Attachments: none
+Cc: 
+Content-type: multipart/mixed; boundary="----------=_1483455916-7086-3"
+
+This is a multi-part message in MIME format...
+
+------------=_1483455916-7086-3
+Content-Type: multipart/alternative; boundary="------------060506070600060108040700"
+
+This is a multi-part message in MIME format.
+--------------060506070600060108040700
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Bonjour David,
+
+Tous mes voeux également !
+
+Je confirme la date et le lieu : bureau du sous-directeur. Qui viendra 
+t-il de votre côté ? Il faut que je signale les visiteurs.
+
+Bien à vous,
+
+Julien
+
+Le 03/01/2017 15:28, David DOLCIMASCOLO a écrit :
+> Bonjour Julien,
+>
+> Mes meilleurs voeux pour cette nouvelle année.
+> Me confirmez-vous la date du 26/01 matin pour notre réunion?
+>
+> Merci,
+> Cordialement,
+> David DOLCIMASCOLO
+> Resp. Equipe OBM / OBM Team Lead
+> Resp. Adjoint Equipe OpenPaas / OpenPaas Team Deputy
+> -------------------------------------------
+> +33 6 76 20 62 28
+> -------------------------------------------
+> Tour Franklin 31 ème étage
+> 100/101 Quartier Boieldieu
+> 92042 PARIS LA DEFENSE
+> FRANCE
+> -------------------------------------------
+> Message envoyé avec OBM, La messagerie Libre :http://www.obm.org/
+> Le 20/12/2016 à 15:26, Petit Julien CEN ( BMPN SDAC STSISI ) a écrit :
+>> Bonjour David,
+>>
+>> Je vous propose a priori le jeudi 26 matin, j'attends de voir 
+>> confirmation du sous-directeur qui serait sans doute intéressé.
+>>
+>> Sylvain ne traite plus de messagerie, ce sont les deux MDL C/ qui en 
+>> sont :
+>>
+>> cyril.matyaszczyk@gendarmerie.interieur.gouv.fr
+>> cyrille.coppitters@gendarmerie.interieur.gouv.fr
+>>
+>> Sans nouvelle de ma part, partons sur cette date ?
+>>
+>> Très belle fête de Noël et bonne fin d'année
+>>
+>> Julien
+>>
+>>
+>> Le 15/12/2016 14:44, David DOLCIMASCOLO a écrit :
+>>> Bonjour Julien, Sylvain,
+>>>
+>>> Comment allez-vous?
+>>> Je souhaiterais organiser un rendez-vous entre Linagora et la GN en 
+>>> début d'année, afin d'échanger sur les sujets suivants:
+>>>
+>>>   * Un point sur le contrat de support OBM en cours
+>>>   * Une présentation de l'état des développements sur OpenPaas
+>>>   * Un focus en particulier sur le serveur de messagerie James
+>>>
+>>> Je peux vous proposer les dates suivantes, en vos locaux:
+>>>
+>>>   * 10 Janvier 2017, après-midi
+>>>   * 24 Janvier 2017, après-midi
+>>>   * 25 Janvier 2017, matin
+>>>   * 26 Janvier 2017, matin
+>>>
+>>>
+>>> Qu'en pensez-vous?
+>>>
+>>> Merci,
+>>> Cordialement,
+>>>
+>>> -- 
+>>> David DOLCIMASCOLO
+>>> Resp. Equipe OBM / OBM Team Lead
+>>> Resp. Adjoint Equipe OpenPaas / OpenPaas Team Deputy
+>>> -------------------------------------------
+>>> +33 6 76 20 62 28
+>>> -------------------------------------------
+>>> Tour Franklin 31 ème étage
+>>> 100/101 Quartier Boieldieu
+>>> 92042 PARIS LA DEFENSE
+>>> FRANCE
+>>> -------------------------------------------
+>>> Message envoyé avec OBM, La messagerie Libre :http://www.obm.org/
+>>
+>> -- 
+>> CEN Julien PETIT
+>> ST(SI)²/BMPN
+>> TPH 01 84 22 42 34
+>
+
+-- 
+CEN Julien PETIT
+ST(SI)²/SDAC/BMPN
+01 84 22 42 34
+
+
+--------------060506070600060108040700
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    Bonjour David,<br>
+    <br>
+    Tous mes v&#339;ux &eacute;galement !<br>
+    <br>
+    Je confirme la date et le lieu : bureau du sous-directeur. Qui
+    viendra t-il de votre c&ocirc;t&eacute; ? Il faut que je signale les visiteurs.<br>
+    <br>
+    Bien &agrave; vous,<br>
+    <br>
+    Julien<br>
+    <br>
+    <div class="moz-cite-prefix">Le 03/01/2017 15:28, David DOLCIMASCOLO
+      a &eacute;crit&nbsp;:<br>
+    </div>
+    <blockquote
+      cite="mid:d5c6f1d6-96e7-8172-9fe6-41fa6c9bd6ec@linagora.com"
+      type="cite">
+      <meta content="text/html; charset=ISO-8859-1"
+        http-equiv="Content-Type">
+      Bonjour Julien,<br>
+      <br>
+      Mes meilleurs v&#339;ux pour cette nouvelle ann&eacute;e.<br>
+      Me confirmez-vous la date du 26/01 matin pour notre r&eacute;union?<br>
+      <br>
+      Merci,<br>
+      Cordialement,<br>
+      <pre class="moz-signature" cols="72">David DOLCIMASCOLO
+Resp. Equipe OBM / OBM Team Lead
+Resp. Adjoint Equipe OpenPaas / OpenPaas Team Deputy
+-------------------------------------------
++33 6 76 20 62 28
+-------------------------------------------
+Tour Franklin 31 &egrave;me &eacute;tage
+100/101 Quartier Boieldieu
+92042 PARIS LA DEFENSE 
+FRANCE
+-------------------------------------------
+Message envoy&eacute; avec OBM, La messagerie Libre :  <a moz-do-not-send="true" class="moz-txt-link-freetext" href="http://www.obm.org/">http://www.obm.org/</a></pre>
+      <div class="moz-cite-prefix">Le 20/12/2016 &agrave; 15:26, Petit Julien
+        CEN ( BMPN SDAC STSISI ) a &eacute;crit&nbsp;:<br>
+      </div>
+      <blockquote
+        cite="mid:58593F7B.2080604@gendarmerie.interieur.gouv.fr"
+        type="cite">
+        <meta content="text/html; charset=ISO-8859-1"
+          http-equiv="Content-Type">
+        Bonjour David,<br>
+        <br>
+        Je vous propose a priori le jeudi 26 matin, j'attends de voir
+        confirmation du sous-directeur qui serait sans doute int&eacute;ress&eacute;.<br>
+        <br>
+        Sylvain ne traite plus de messagerie, ce sont les deux MDL C/
+        qui en sont :<br>
+        <br>
+        <a moz-do-not-send="true" class="moz-txt-link-abbreviated"
+          href="mailto:cyril.matyaszczyk@gendarmerie.interieur.gouv.fr">cyril.matyaszczyk@gendarmerie.interieur.gouv.fr</a><br>
+        <a moz-do-not-send="true" class="moz-txt-link-abbreviated"
+          href="mailto:cyrille.coppitters@gendarmerie.interieur.gouv.fr">cyrille.coppitters@gendarmerie.interieur.gouv.fr</a><br>
+        <br>
+        Sans nouvelle de ma part, partons sur cette date ?<br>
+        <br>
+        Tr&egrave;s belle f&ecirc;te de No&euml;l et bonne fin d'ann&eacute;e<br>
+        <br>
+        Julien<br>
+        <br>
+        <br>
+        <div class="moz-cite-prefix">Le 15/12/2016 14:44, David
+          DOLCIMASCOLO a &eacute;crit&nbsp;:<br>
+        </div>
+        <blockquote
+          cite="mid:9b6a4271-69fb-217a-5c14-c68c68375d96@linagora.com"
+          type="cite">
+          <meta http-equiv="content-type" content="text/html;
+            charset=ISO-8859-1">
+          Bonjour Julien, Sylvain,<br>
+          <br>
+          Comment allez-vous?<br>
+          Je souhaiterais organiser un rendez-vous entre Linagora et la
+          GN en d&eacute;but d'ann&eacute;e, afin d'&eacute;changer sur les sujets suivants:<br>
+          <ul>
+            <li>Un point sur le contrat de support OBM en cours</li>
+            <li>Une pr&eacute;sentation de l'&eacute;tat des d&eacute;veloppements sur
+              OpenPaas</li>
+            <li>Un focus en particulier sur le serveur de messagerie
+              James</li>
+          </ul>
+          <p>Je peux vous proposer les dates suivantes, en vos locaux:<br>
+          </p>
+          <ul>
+            <li>10 Janvier 2017, apr&egrave;s-midi</li>
+            <li>24 Janvier 2017, apr&egrave;s-midi</li>
+            <li>25 Janvier 2017, matin</li>
+            <li>26 Janvier 2017, matin</li>
+          </ul>
+          <p><br>
+            Qu'en pensez-vous?</p>
+          <p>Merci,<br>
+            Cordialement,<br>
+          </p>
+          <pre class="moz-signature" cols="72">-- 
+David DOLCIMASCOLO
+Resp. Equipe OBM / OBM Team Lead
+Resp. Adjoint Equipe OpenPaas / OpenPaas Team Deputy
+-------------------------------------------
++33 6 76 20 62 28
+-------------------------------------------
+Tour Franklin 31 &egrave;me &eacute;tage
+100/101 Quartier Boieldieu
+92042 PARIS LA DEFENSE 
+FRANCE
+-------------------------------------------
+Message envoy&eacute; avec OBM, La messagerie Libre :  <a moz-do-not-send="true" class="moz-txt-link-freetext" href="http://www.obm.org/">http://www.obm.org/</a></pre>
+        </blockquote>
+        <br>
+        <pre class="moz-signature" cols="72">-- 
+CEN Julien PETIT
+ST(SI)&sup2;/BMPN
+TPH 01 84 22 42 34</pre>
+      </blockquote>
+      <br>
+    </blockquote>
+    <br>
+    <pre class="moz-signature" cols="72">-- 
+CEN Julien PETIT
+ST(SI)&sup2;/SDAC/BMPN
+01 84 22 42 34</pre>
+  </body>
+</html>
+
+--------------060506070600060108040700--
+
+------------=_1483455916-7086-3
+Content-Type: text/plain; charset="iso-8859-1"; name="avertissement.txt"
+Content-Disposition: inline; filename="avertissement.txt"
+Content-Transfer-Encoding: binary
+
+Ce message électronique et tous les fichiers attachés qu'il contient sont confidentiels et destinés exclusivement à l'usage de la personne à laquelle ils sont adressés. Si vous avez reçu ce message par erreur, merci de le retourner à son émetteur. La publication, l'usage, la distribution, l'impression ou la copie non autorisée de ce message et des attachements qu'il contient sont strictement interdits.
+
+En cas d'urgence, composez le 17 ou le 112.
+Afin de contribuer au respect de l'environnement, merci de n'imprimer cet e-mail qu'en cas de necessite.
+
+This e-mail and any files transmitted with it are confidential and intended solely for the use of the individual to whom it is addressed. If you have received this email in error please send it back to the person that sent it to you. Unauthorized publication, use, dissemination, forwarding, printing or copying of this email and its associated attachments is strictly prohibited.
+
+In case of emergency, dial number 17 or 112.
+To contribute to the environmental protection, please print this e-mail only if necessary. 
+
+------------=_1483455916-7086-3--

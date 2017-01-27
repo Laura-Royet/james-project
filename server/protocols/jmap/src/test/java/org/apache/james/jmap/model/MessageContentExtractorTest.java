@@ -46,6 +46,7 @@ public class MessageContentExtractorTest {
     private static final String TEXT_CONTENT = "text content";
     private static final String HTML_CONTENT = "<b>html</b> content";
     private static final String ATTACHMENT_CONTENT = "attachment content";
+    private static final String IMAGE_CONTENT = "image content";
     private static final String ANY_VALUE = "anyValue";
     private static final Field CONTENT_ID_FIELD = new Field() {
         @Override
@@ -69,6 +70,8 @@ public class MessageContentExtractorTest {
     private BodyPart htmlPart;
     private BodyPart textPart;
     private BodyPart textAttachment;
+    private BodyPart inlineText;
+    private BodyPart inlineImage;
 
     @Before
     public void setup() throws IOException {
@@ -78,6 +81,14 @@ public class MessageContentExtractorTest {
         textAttachment = BodyPartBuilder.create()
                 .setBody(ATTACHMENT_CONTENT, "plain", Charsets.UTF_8)
                 .setContentDisposition("attachment")
+                .build();
+        inlineText = BodyPartBuilder.create()
+                .setBody(ATTACHMENT_CONTENT, "plain", Charsets.UTF_8)
+                .setContentDisposition("inline")
+                .build();
+        inlineImage = BodyPartBuilder.create()
+                .setBody(IMAGE_CONTENT, "png", Charsets.UTF_8)
+                .setContentDisposition("inline")
                 .build();
     }
 
@@ -339,5 +350,51 @@ public class MessageContentExtractorTest {
 
         //Then
         assertThat(actual.getTextBody()).isEmpty();
+    }
+
+    @Test
+    public void TEST1extractShouldRetrieveTextBodyWhenOneInlinedTextAttachmentWithoutCid() throws IOException {
+        BodyPart multipartAlternative = BodyPartBuilder.create()
+                .setBody(MultipartBuilder.create("alternative")
+                        .addBodyPart(textPart)
+                        .addBodyPart(htmlPart)
+                        .build())
+                .build();
+
+        Multipart multipartMixed = MultipartBuilder.create("mixed")
+                .addBodyPart(multipartAlternative)
+                .addBodyPart(inlineText)
+                .build();
+
+        Message message = MessageBuilder.create()
+                .setBody(multipartMixed)
+                .build();
+
+        MessageContent actual = testee.extract(message);
+        assertThat(actual.getTextBody()).contains(TEXT_CONTENT);
+        assertThat(actual.getHtmlBody()).contains(HTML_CONTENT);
+    }
+
+    @Test
+    public void TEST2extractShouldRetrieveTextBodyAndHtmlBodyWhenOneInlinedImage() throws IOException {
+        BodyPart multipartRelated = BodyPartBuilder.create()
+                .setBody(MultipartBuilder.create("related")
+                        .addBodyPart(htmlPart)
+                        .addBodyPart(inlineImage)
+                        .build())
+                .build();
+
+        Multipart multipartAlternative = MultipartBuilder.create("alternative")
+                .addBodyPart(textPart)
+                .addBodyPart(multipartRelated)
+                .build();
+
+        Message message = MessageBuilder.create()
+                .setBody(multipartAlternative)
+                .build();
+
+        MessageContent actual = testee.extract(message);
+        assertThat(actual.getTextBody()).contains(TEXT_CONTENT);
+        assertThat(actual.getHtmlBody()).contains(HTML_CONTENT);
     }
 }

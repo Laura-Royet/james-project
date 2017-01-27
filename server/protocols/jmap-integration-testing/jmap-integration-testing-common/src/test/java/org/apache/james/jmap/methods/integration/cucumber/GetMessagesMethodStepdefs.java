@@ -172,6 +172,16 @@ public class GetMessagesMethodStepdefs {
         appendMessage(messageName, "eml/longLine.eml");
     }
 
+    @Given("^the user has a message \"([^\"]*)\" in \"([^\"]*)\" mailbox with plain/text inline attachment$")
+    public void appendMessageWithPlainTextInlineAttachment(String messageName, String mailbox) throws Throwable {
+        appendMessage(messageName, "eml/testddo1.eml");
+    }
+
+    @Given("^the user has a message \"([^\"]*)\" in \"([^\"]*)\" mailbox with image/png inline attachment$")
+    public void appendMessageWithImagePngInlineAttachment(String messageName, String mailbox) throws Throwable {
+        appendMessage(messageName, "eml/testddo2.eml");
+    }
+
     private void appendMessage(String messageName, String emlFileName) throws Exception {
         ZonedDateTime dateTime = ZonedDateTime.parse("2014-10-30T14:12:00Z");
         MessageId id = mainStepdefs.jmapServer.serverProbe().appendMessage(userStepdefs.lastConnectedUser,
